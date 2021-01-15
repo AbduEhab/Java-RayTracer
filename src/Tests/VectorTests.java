@@ -18,7 +18,7 @@ public class VectorTests {
 
         Vector res = a.negate();
 
-        assertEquals(res.equals(b), true, "Vector negation method is not valid");
+        assertEquals(true, res.equals(b), "Vector negation method is not valid");
     }
 
     @Test
@@ -29,7 +29,7 @@ public class VectorTests {
 
         Vector res = a.multiply(2);
 
-        assertEquals(res.getX(), 2, "Vector multiplication method is not valid");
+        assertEquals(2, res.getX(), "Vector multiplication method is not valid");
     }
 
     @Test
@@ -40,7 +40,7 @@ public class VectorTests {
 
         Vector res = a.divide(2);
 
-        assertEquals(res.getX(), 0.5, "Vector division method is not valid");
+        assertEquals(0.5, res.getX(), "Vector division method is not valid");
     }
 
     @Test
@@ -49,7 +49,7 @@ public class VectorTests {
 
         Vector a = new Vector(1, 2, 3);
 
-        assertEquals(a.magnitude(), Math.sqrt(14), "Vector magnitude method is not valid");
+        assertEquals(Math.sqrt(14), a.magnitude(), "Vector magnitude method is not valid");
     }
 
     @Test
@@ -60,7 +60,7 @@ public class VectorTests {
 
         Vector res = a.normalize();
 
-        assertEquals(res.getX(), 1, "Vector normalize method is not valid");
+        assertEquals(1, res.getX(), "Vector normalize method is not valid");
     }
 
     @Test
@@ -72,7 +72,7 @@ public class VectorTests {
 
         double res = a.dot(b);
 
-        assertEquals(res, 20, "Vector dot method is not valid");
+        assertEquals(20, res, "Vector dot method is not valid");
     }
 
     @Test

@@ -16,7 +16,7 @@ public class TupleTests {
 
         Point a = new Point(4, -4, 3);
 
-        assertEquals(a.getW(), 0, "Point not initiated correctly");
+        assertEquals(1, a.getW(), "Point not initiated correctly");
     }
 
     @Test
@@ -25,7 +25,7 @@ public class TupleTests {
 
         Vector a = new Vector(4, -4, 3);
 
-        assertEquals(a.getW(), 1, "Vector not initiated correctly");
+        assertEquals(0, a.getW(), "Vector not initiated correctly");
     }
 
     @Test
@@ -38,9 +38,9 @@ public class TupleTests {
         Point c = new Point(4, -4, 3);
         Point d = new Point(4, -4, 3);
 
-        assertEquals(a.equals(b), true, "Vector Equals method is not valid");
-        assertEquals(c.equals(d), true, "Point Equals method is not valid");
-        assertEquals(a.equals(c), false, "Vector canot equal Point");
+        assertEquals(true, a.equals(b), "Vector Equals method is not valid");
+        assertEquals(true, c.equals(d), "Point Equals method is not valid");
+        assertEquals(false, a.equals(c), "Vector canot equal Point");
     }
 
     @Test
@@ -54,12 +54,10 @@ public class TupleTests {
         Point d = new Point(1, 0, 1);
 
         Vector res1 = a.add(b);
-        Vector res2 = a.add(c);
-        Vector res3 = c.add(d);
+        Point res2 = c.add(a);
 
-        assertEquals(res1.getW(), 0, "Tuple Add method is not valid for vector vector opperations");
-        assertEquals(res2.getW(), 1, "Tuple Add method is not valid for vector point opperations");
-        assertEquals(res3.getW(), 2, "Tuple Add method is not valid for point point opperations");
+        assertEquals(0, res1.getW(), "Tuple Add method is not valid for vector vector opperations");
+        assertEquals(1, res2.getW(), "Tuple Add method is not valid for vector point opperations");
     }
 
     @Test
@@ -73,11 +71,11 @@ public class TupleTests {
         Point d = new Point(1, 0, 1);
 
         Vector res1 = a.subtract(b);
-        Vector res2 = a.subtract(c);
+        Vector res2 = c.subtract(a);
         Vector res3 = c.subtract(d);
 
-        assertEquals(res1.getW(), 0, "Tuple Subtract method is not valid for vector vector opperations");
-        assertEquals(res2.getW(), -1, "Tuple Subtract method is not valid for vector point opperations");
-        assertEquals(res3.getW(), 0, "Tuple Subtract method is not valid for point point opperations");
+        assertEquals(0, res1.getX(), "Tuple Subtract method is not valid for vector vector opperations");
+        assertEquals(0, res2.getW(), "Tuple Subtract method is not valid for vector point opperations");
+        assertEquals(0, res3.getZ(), "Tuple Subtract method is not valid for point point opperations");
     }
 }

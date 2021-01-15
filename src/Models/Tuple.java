@@ -18,16 +18,9 @@ public abstract class Tuple {
                 && (Math.abs(matrix[3] - tupleToCompare.getW()) < 0.00001);
     }
 
-    public Vector add(Tuple second) {
+    public abstract Tuple add(Tuple b);
 
-        return new Vector(matrix[0] + second.getX(), matrix[1] + second.getY(), matrix[2] + second.getZ());
-
-    }
-
-    public Vector subtract(Tuple second) {
-
-        return new Vector(matrix[0] - second.getX(), matrix[1] - second.getY(), matrix[2] - second.getZ());
-    }
+    public abstract Tuple subtract(Tuple b);
 
     public double getX() {
         return matrix[0];

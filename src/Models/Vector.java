@@ -10,6 +10,15 @@ public class Vector extends Tuple {
         super(x, y, z, 0);
     }
 
+    public Vector add(Tuple b) {
+        return new Vector(getX() + b.getX(), getY() + b.getY(), getZ() + b.getZ());
+
+    }
+
+    public Vector subtract(Tuple b) {
+        return new Vector(getX() - b.getX(), getY() - b.getY(), getZ() - b.getZ());
+    }
+
     public Vector negate() {
         return new Vector(getX() * -1, getY() * -1, getZ() * -1);
     }
