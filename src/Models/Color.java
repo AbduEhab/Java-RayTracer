@@ -3,14 +3,15 @@ package Models;
 public class Color extends Tuple {
 
     public Color(double red, double green, double blue) {
-        super(red, green, blue, 0);
+
+        super(red > 255 ? 255 : red < 0 ? 0 : red, green > 255 ? 255 : green < 0 ? 0 : green,
+                blue > 255 ? 255 : blue < 0 ? 0 : blue, 0);
     }
 
     public Color add(Tuple b) {
         return new Color(red() + b.getX(), green() + b.getY(), blue() + b.getZ());
     }
 
-    @Override
     public Color subtract(Tuple b) {
         return new Color(red() - b.getX(), green() - b.getY(), blue() - b.getZ());
     }
@@ -23,15 +24,15 @@ public class Color extends Tuple {
         return new Color(getX() * b.getX(), getY() * b.getY(), getZ() * b.getZ());
     }
 
-    public double red() {
-        return getX();
+    public int red() {
+        return (int) getX();
     }
 
-    public double green() {
-        return getY();
+    public int green() {
+        return (int) getY();
     }
 
-    public double blue() {
-        return getZ();
+    public int blue() {
+        return (int) getZ();
     }
 }

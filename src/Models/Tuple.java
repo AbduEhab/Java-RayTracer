@@ -37,4 +37,24 @@ public abstract class Tuple {
     public double getW() {
         return matrix[3];
     }
+
+    public Tuple setX(double newValue) {
+        matrix[0] = newValue;
+        return this;
+    }
+
+    public Tuple setY(double newValue) {
+        matrix[1] = newValue;
+        return this;
+    }
+
+    public Tuple setZ(double newValue) {
+        matrix[2] = newValue;
+        return this;
+    }
+
+    public Tuple setW(double newValue) {
+        matrix[3] = newValue;
+        return this;
+    }
 }

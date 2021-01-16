@@ -51,7 +51,6 @@ public class TupleTests {
         Vector b = new Vector(1, 0, 1);
 
         Point c = new Point(1, 0, 1);
-        Point d = new Point(1, 0, 1);
 
         Vector res1 = a.add(b);
         Point res2 = c.add(a);
