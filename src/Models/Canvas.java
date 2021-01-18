@@ -1,6 +1,6 @@
 package Models;
 
-import java.io.File;
+import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -31,51 +31,43 @@ public class Canvas {
     }
 
     public boolean toPPM() {
-        int fileNumber = 1;
-        File output;
-        // try {
-        // output = new File("./Renders/ExampleSample.ppm");
-        // if (output.createNewFile())
-        // System.out.println("File created: " + output.getName());
-        // else {
-        // while (true) {
 
-        // output = new File("./Renders/ExampleSample_" + fileNumber + ".ppm");
-        // if (output.createNewFile()) {
-        // System.out.println("File created: " + output.getName());
-        // break;
-        // } else {
-        // fileNumber++;
-        // continue;
-        // }
-        // }
-        // }
+        String ppmStartString = "P3\n" + width + " " + height + "\n255\n";
+
+        Long startTime = System.nanoTime();
+
+        try {
+            BufferedWriter buffer = new BufferedWriter(new FileWriter("./Renders/" + "ExampleRender.ppm"));
+
+            buffer.write(ppmStartString);
+
+            for (int i = height - 1; i >= 0; i--) {
+                for (int j = 0; j < width; j++) {
+                    Color c = pixel[j][i];
+                    buffer.write(c.red() + " " + c.green() + " " + c.blue() + " ");
+                }
+                buffer.write("\n");
+                System.out.println("Rendering pixel row: [" + (height - i) + " / " + height + "]");
+            }
+            buffer.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("An error while writing file.");
+            return false;
+        }
+
+        // try {
+        // FileWriter myWriter = new FileWriter("./Renders/" + "ExampleRender.ppm");
+        // myWriter.write(ppmString);
+        // myWriter.close();
         // } catch (IOException e) {
-        // System.out.println("An error while creating file.");
+        // System.out.println("An error while writing file.");
         // e.printStackTrace();
         // return false;
         // }
-
-        String ppmString = "P3\n" + getWidth() + " " + getHeight() + "\n255\n";
-
-        for (int i = height - 1; i >= 0; i--) {
-            for (int j = 0; j < width; j++) {
-                Color c = pixel[j][i];
-                ppmString += c.red() + " " + c.green() + " " + c.blue() + " ";
-                System.out.println("Rendering pixel: [" + j + ", " + i + "]");
-            }
-            ppmString += "\n";
-        }
-
-        try {
-            FileWriter myWriter = new FileWriter("./Renders/" + "ExampleRender.ppm");
-            myWriter.write(ppmString);
-            myWriter.close();
-        } catch (IOException e) {
-            System.out.println("An error while writing file.");
-            e.printStackTrace();
-            return false;
-        }
+        Long endTime = System.nanoTime();
+        System.out.println("Rendering done in:  " + (endTime - startTime) / 1000000 + "ms");
         return true;
     }
 

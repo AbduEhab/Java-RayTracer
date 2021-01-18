@@ -18,4 +18,8 @@ public class Point extends Tuple {
         return new Vector(getX() - b.getX(), getY() - b.getY(), getZ() - b.getZ());
     }
 
+    public String toString() {
+        return "Point is: ( " + getX() + ", " + getY() + ", " + getZ() + ")\n";
+    }
+
 }

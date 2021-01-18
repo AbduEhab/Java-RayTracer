@@ -35,4 +35,8 @@ public class Color extends Tuple {
     public int blue() {
         return (int) getZ();
     }
+
+    public String toString() {
+        return "Color is: ( " + red() + ", " + green() + ", " + blue() + ")\n";
+    }
 }
