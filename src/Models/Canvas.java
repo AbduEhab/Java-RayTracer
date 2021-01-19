@@ -57,15 +57,6 @@ public class Canvas {
             return false;
         }
 
-        // try {
-        // FileWriter myWriter = new FileWriter("./Renders/" + "ExampleRender.ppm");
-        // myWriter.write(ppmString);
-        // myWriter.close();
-        // } catch (IOException e) {
-        // System.out.println("An error while writing file.");
-        // e.printStackTrace();
-        // return false;
-        // }
         Long endTime = System.nanoTime();
         System.out.println("Rendering done in:  " + (endTime - startTime) / 1000000 + "ms");
         return true;

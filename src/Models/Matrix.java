@@ -1,8 +1,11 @@
 package Models;
 
 public class Matrix {
-    double[][] matrix;
-    int size;
+    private double[][] matrix;
+    private int size;
+
+    public static final double[][] IdentityArray = { { 1, 0, 0, 0 }, { 0, 1, 0, 0 }, { 0, 0, 1, 0 }, { 0, 0, 0, 1 } };
+    public static Matrix Identity = new Matrix(4, IdentityArray);
 
     public Matrix(int size) {
         matrix = new double[size][size];
@@ -13,6 +16,12 @@ public class Matrix {
                 matrix[i][j] = 0;
             }
         }
+    }
+
+    public Matrix(int size, double[][] InitialFields) {
+        matrix = new double[size][size];
+        this.size = size;
+        setMatrix(InitialFields);
     }
 
     public boolean equals(Matrix b) {
@@ -44,8 +53,7 @@ public class Matrix {
         return temp;
     }
 
-    // probable mistake, to fix just return a vector
-    public Point multiply(Tuple b) {
+    public Point multiply(Point b) {
         double[] res = new double[4];
 
         double[] mb = { b.getX(), b.getY(), b.getZ(), 1 };
@@ -57,23 +65,33 @@ public class Matrix {
             }
             res[i] = temp;
         }
-
         return new Point(res[0], res[1], res[2]);
     }
 
+    public Vector multiply(Vector b) {
+        double[] res = new double[4];
+
+        double[] mb = { b.getX(), b.getY(), b.getZ(), 0 };
+
+        for (int i = 0; i < size - 1; i++) {
+            double temp = 0;
+            for (int j = 0; j < size; j++) {
+                temp += matrix[i][j] * mb[j];
+            }
+            res[i] = temp;
+        }
+
+        return new Vector(res[0], res[1], res[2]);
+    }
+
     public Matrix multiplyByIdentity() {
-        double[][] nm = { { 1, 0, 0, 0 }, { 0, 1, 0, 0 }, { 0, 0, 1, 0 }, { 0, 0, 0, 1 } };
-
-        Matrix identity = new Matrix(4);
-        identity.setMatrix(nm);
-
         double result = 0;
 
         Matrix temp = new Matrix(size);
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                result += matrix[i][0] * identity.getElement(0, j) + matrix[i][1] * identity.getElement(1, j)
-                        + matrix[i][2] * identity.getElement(2, j) + matrix[i][3] * identity.getElement(3, j);
+                result += matrix[i][0] * IdentityArray[0][j] + matrix[i][1] * IdentityArray[1][j]
+                        + matrix[i][2] * IdentityArray[2][j] + matrix[i][3] * IdentityArray[3][j];
                 temp.setElement(i, j, result);
                 result = 0;
             }
@@ -160,10 +178,68 @@ public class Matrix {
 
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                temp.setElement(i, j, cofactor.getElement(j, j) / det); // j & i exchanged for the time being
+                temp.setElement(i, j, cofactor.getElement(j, i) / det); // j & i exchanged for the time being
             }
         }
+
         return temp;
+    }
+
+    public Matrix translate(double x, double y, double z) {
+
+        Matrix translationMatrix = new Matrix(4);
+        double[][] tv = { { 1, 0, 0, x }, { 0, 1, 0, y }, { 0, 0, 1, z }, { 0, 0, 0, 1 } };
+        translationMatrix.setMatrix(tv);
+
+        return this.multiply(translationMatrix);
+    }
+
+    public Matrix scale(double x, double y, double z) {
+
+        Matrix scalingMatrix = new Matrix(4);
+        double[][] tv = { { x, 0, 0, 0 }, { 0, y, 0, 0 }, { 0, 0, z, 0 }, { 0, 0, 0, 1 } };
+        scalingMatrix.setMatrix(tv);
+
+        return this.multiply(scalingMatrix);
+    }
+
+    public Matrix rotateX(double radians) {
+
+        Matrix rotationMatrix = new Matrix(4);
+        double[][] rv = { { 1, 0, 0, 0 }, { 0, Math.cos(radians), -Math.sin(radians), 0 },
+                { 0, Math.sin(radians), Math.cos(radians), 0 }, { 0, 0, 0, 1 } };
+        rotationMatrix.setMatrix(rv);
+
+        return this.multiply(rotationMatrix);
+    }
+
+    public Matrix rotateY(double radians) {
+
+        Matrix rotationMatrix = new Matrix(4);
+        double[][] rv = { { Math.cos(radians), 0, Math.sin(radians), 0 }, { 0, 1, 0, 0 },
+                { -Math.sin(radians), 0, Math.cos(radians), 0 }, { 0, 0, 0, 1 } };
+        rotationMatrix.setMatrix(rv);
+
+        return this.multiply(rotationMatrix);
+    }
+
+    public Matrix rotateZ(double radians) {
+
+        Matrix rotationMatrix = new Matrix(4);
+        double[][] rv = { { Math.cos(radians), -Math.sin(radians), 0, 0 },
+                { Math.sin(radians), Math.cos(radians), 0, 0 }, { 0, 0, 1, 0 }, { 0, 0, 0, 1 } };
+        rotationMatrix.setMatrix(rv);
+
+        return this.multiply(rotationMatrix);
+    }
+
+    public Matrix shear(double Xy, double Xz, double Yx, double Yz, double Zx, double Zy) {
+
+        Matrix shearingMatrix = new Matrix(4);
+        double[][] sv = { { 1, Xy, Xz, 0 }, { Yx, 1, Yz, 0 }, { Zx, Zy, 1, 0 }, { 0, 0, 0, 1 } };
+        shearingMatrix.setMatrix(sv);
+
+        return this.multiply(shearingMatrix);
     }
 
     public double getElement(int i, int j) {

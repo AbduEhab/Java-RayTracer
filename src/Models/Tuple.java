@@ -12,6 +12,7 @@ public abstract class Tuple {
     }
 
     public boolean equals(Tuple tupleToCompare) {
+        System.out.println(this + "\n" + tupleToCompare);
         return (Math.abs(components[0] - tupleToCompare.getX()) <= 0.00001)
                 && (Math.abs(components[1] - tupleToCompare.getY()) <= 0.00001)
                 && (Math.abs(components[2] - tupleToCompare.getZ()) <= 0.00001)
