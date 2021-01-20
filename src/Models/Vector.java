@@ -3,7 +3,7 @@ package Models;
 public class Vector extends Tuple {
 
     public Vector() {
-        super();
+        super(0, 0, 0, 0);
     }
 
     public Vector(double x, double y, double z) {

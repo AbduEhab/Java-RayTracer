@@ -3,16 +3,11 @@ package Models;
 public abstract class Tuple {
     private double[] components;
 
-    public Tuple() {
-        components = new double[] { 0, 0, 0, 0 };
-    }
-
     public Tuple(double x, double y, double z, double w) {
         components = new double[] { x, y, z, w };
     }
 
     public boolean equals(Tuple tupleToCompare) {
-        System.out.println(this + "\n" + tupleToCompare);
         return (Math.abs(components[0] - tupleToCompare.getX()) <= 0.00001)
                 && (Math.abs(components[1] - tupleToCompare.getY()) <= 0.00001)
                 && (Math.abs(components[2] - tupleToCompare.getZ()) <= 0.00001)

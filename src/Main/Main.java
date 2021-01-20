@@ -50,7 +50,7 @@ public class Main {
         for (int i = 0; i < 12; i++) {
 
             c.writePixel((int) hourPoint.getX() + 300, (int) hourPoint.getY() + 300, new Color(255, 255, 255));
-            hourPoint = Matrix.Identity.rotateZ(Math.PI / 6).multiply(hourPoint);
+            hourPoint = Matrix.IDENTITY.rotateZ(Math.PI / 6).multiply(hourPoint);
         }
         return c;
     }

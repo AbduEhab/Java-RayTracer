@@ -3,7 +3,7 @@ package Models;
 public class Point extends Tuple {
 
     public Point() {
-        super();
+        super(0, 0, 0, 1);
     }
 
     public Point(double x, double y, double z) {

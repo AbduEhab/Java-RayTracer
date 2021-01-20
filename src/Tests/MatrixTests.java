@@ -187,15 +187,13 @@ public class MatrixTests {
 
         Vector v = new Vector(-3, 4, 5);
 
-        System.out.println(Matrix.Identity);
-
-        assertEquals(true, Matrix.Identity.translate(5, -3, 2).multiply(p).equals(res),
+        assertEquals(true, Matrix.IDENTITY.translate(5, -3, 2).multiply(p).equals(res),
                 "Matrix Translation method not implemented correctly");
 
-        assertEquals(true, Matrix.Identity.translate(5, -3, 2).inverse().multiply(p).equals(res2),
+        assertEquals(true, Matrix.IDENTITY.translate(5, -3, 2).inverse().multiply(p).equals(res2),
                 "Matrix Translation method not implemented correctly");
 
-        assertEquals(true, Matrix.Identity.translate(5, -3, 2).multiply(v).equals(v),
+        assertEquals(true, Matrix.IDENTITY.translate(5, -3, 2).multiply(v).equals(v),
                 "Matrix Translation method not implemented correctly");
 
     }
@@ -214,13 +212,13 @@ public class MatrixTests {
 
         Vector res3 = new Vector(-2, 2, 2);
 
-        assertEquals(true, Matrix.Identity.scale(2, 3, 4).multiply(p).equals(res),
+        assertEquals(true, Matrix.IDENTITY.scale(2, 3, 4).multiply(p).equals(res),
                 "Matrix-point Scaling method not implemented correctly");
 
-        assertEquals(true, Matrix.Identity.scale(2, 3, 4).multiply(v).equals(res2),
+        assertEquals(true, Matrix.IDENTITY.scale(2, 3, 4).multiply(v).equals(res2),
                 "Matrix-vector Scaling method not implemented correctly");
 
-        assertEquals(true, Matrix.Identity.scale(2, 3, 4).inverse().multiply(v).equals(res3),
+        assertEquals(true, Matrix.IDENTITY.scale(2, 3, 4).inverse().multiply(v).equals(res3),
                 "Matrix-vector Scaling method not implemented correctly");
 
     }
@@ -235,10 +233,10 @@ public class MatrixTests {
             Point res = new Point(0, Math.sqrt(2) / 2, Math.sqrt(2) / 2);
             Point res2 = new Point(0, Math.sqrt(2) / 2, -Math.sqrt(2) / 2);
 
-            assertEquals(true, Matrix.Identity.rotateX(Math.PI / 4).multiply(p).equals(res),
+            assertEquals(true, Matrix.IDENTITY.rotateX(Math.PI / 4).multiply(p).equals(res),
                     "Matrix X Rotation method not implemented correctly");
 
-            assertEquals(true, Matrix.Identity.rotateX(Math.PI / 4).inverse().multiply(p).equals(res2),
+            assertEquals(true, Matrix.IDENTITY.rotateX(Math.PI / 4).inverse().multiply(p).equals(res2),
                     "Matrix X Rotation method not implemented correctly");
         }
 
@@ -247,7 +245,7 @@ public class MatrixTests {
 
             Point res = new Point(Math.sqrt(2) / 2, 0, Math.sqrt(2) / 2);
 
-            assertEquals(true, Matrix.Identity.rotateY(Math.PI / 4).multiply(p).equals(res),
+            assertEquals(true, Matrix.IDENTITY.rotateY(Math.PI / 4).multiply(p).equals(res),
                     "Matrix Y Rotation method not implemented correctly");
 
         }
@@ -257,7 +255,7 @@ public class MatrixTests {
 
             Point res = new Point(-Math.sqrt(2) / 2, Math.sqrt(2) / 2, 0);
 
-            assertEquals(true, Matrix.Identity.rotateZ(Math.PI / 4).multiply(p).equals(res),
+            assertEquals(true, Matrix.IDENTITY.rotateZ(Math.PI / 4).multiply(p).equals(res),
                     "Matrix Z Rotation method not implemented correctly");
 
         }
@@ -279,15 +277,15 @@ public class MatrixTests {
 
         Point res5 = new Point(2, 3, 7);
 
-        assertEquals(true, Matrix.Identity.shear(0, 1, 0, 0, 0, 0).multiply(p).equals(res),
+        assertEquals(true, Matrix.IDENTITY.shear(0, 1, 0, 0, 0, 0).multiply(p).equals(res),
                 "Matrix-point Shearing method not implemented correctly");
-        assertEquals(true, Matrix.Identity.shear(0, 0, 1, 0, 0, 0).multiply(p).equals(res2),
+        assertEquals(true, Matrix.IDENTITY.shear(0, 0, 1, 0, 0, 0).multiply(p).equals(res2),
                 "Matrix-point Shearing method not implemented correctly");
-        assertEquals(true, Matrix.Identity.shear(0, 0, 0, 1, 0, 0).multiply(p).equals(res3),
+        assertEquals(true, Matrix.IDENTITY.shear(0, 0, 0, 1, 0, 0).multiply(p).equals(res3),
                 "Matrix-point Shearing method not implemented correctly");
-        assertEquals(true, Matrix.Identity.shear(0, 0, 0, 0, 1, 0).multiply(p).equals(res4),
+        assertEquals(true, Matrix.IDENTITY.shear(0, 0, 0, 0, 1, 0).multiply(p).equals(res4),
                 "Matrix-point Shearing method not implemented correctly");
-        assertEquals(true, Matrix.Identity.shear(0, 0, 0, 0, 0, 1).multiply(p).equals(res5),
+        assertEquals(true, Matrix.IDENTITY.shear(0, 0, 0, 0, 0, 1).multiply(p).equals(res5),
                 "Matrix-point Shearing method not implemented correctly");
 
     }
@@ -300,8 +298,8 @@ public class MatrixTests {
 
         Point res = new Point(15, 0, 7);
 
-        assertEquals(true, Matrix.Identity.translate(10, 5, 7)
-                .multiply(Matrix.Identity.scale(5, 5, 5).multiply(Matrix.Identity.rotateX(Math.PI / 2).multiply(p)))
+        assertEquals(true, Matrix.IDENTITY.translate(10, 5, 7)
+                .multiply(Matrix.IDENTITY.scale(5, 5, 5).multiply(Matrix.IDENTITY.rotateX(Math.PI / 2).multiply(p)))
                 .equals(res), "Matrix sequential transformation not working correctly");
 
     }
@@ -315,7 +313,7 @@ public class MatrixTests {
         Point res = new Point(15, 0, 7);
 
         assertEquals(true,
-                Matrix.Identity.translate(10, 5, 7).scale(5, 5, 5).rotateX(Math.PI / 2).multiply(p).equals(res),
+                Matrix.IDENTITY.translate(10, 5, 7).scale(5, 5, 5).rotateX(Math.PI / 2).multiply(p).equals(res),
                 "Matrix chaining transformation not working correctly");
     }
 }

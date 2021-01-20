@@ -4,8 +4,9 @@ public class Matrix {
     private double[][] matrix;
     private int size;
 
-    public static final double[][] IdentityArray = { { 1, 0, 0, 0 }, { 0, 1, 0, 0 }, { 0, 0, 1, 0 }, { 0, 0, 0, 1 } };
-    public static Matrix Identity = new Matrix(4, IdentityArray);
+    private static final double[][] IdentityArray = { { 1, 0, 0, 0 }, { 0, 1, 0, 0 }, { 0, 0, 1, 0 }, { 0, 0, 0, 1 } };
+
+    public static Matrix IDENTITY = new Matrix(4, IdentityArray);
 
     public Matrix(int size) {
         matrix = new double[size][size];
