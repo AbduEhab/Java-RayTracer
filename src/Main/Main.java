@@ -25,9 +25,13 @@ public class Main {
         System.out.println("Pixel Calculation done in: " + (endTime - startTime) / 1000000 + "ms");
 
         c.toPPM();
+
+        endTime = System.nanoTime();
+        System.out.println("Rendering done in: " + (endTime - startTime) / 1000000 + "ms");
+
     }
 
-    private static Canvas ProjectilePath() { // Program 1
+    private static Canvas ProjectilePath() { // Program 1   --Chapter 2
 
         Projectile ball = new Projectile(new Point(0, 1, 0), new Vector(1, 1.8, 0).normalize().multiply(11.25));
         Enviroment atm = new Enviroment(new Vector(0, -0.1, 0), new Vector(-0.01, 0, 0));
@@ -44,7 +48,7 @@ public class Main {
         return c;
     }
 
-    private static Canvas hourClock() { // Program 2
+    private static Canvas hourClock() { // Program 2    --chapter 4
         var c = new Canvas(600, 600);
 
         Point hourPoint = new Point(0, 3 * 600 / 8, 0);
@@ -59,7 +63,7 @@ public class Main {
         return c;
     }
 
-    private static Canvas circle() {// program 2
+    private static Canvas circle() {// program 3    --chapter 5
         var c = new Canvas(100, 100);
 
         Color red = new Color(255, 0, 0);
@@ -72,19 +76,20 @@ public class Main {
         double half = wallSize / 2.0;
 
         for (int i = 0; i < c.getHeight(); i++) {
-            int worldY = (int) ((-c.getHeight() / 2) + i);
-            System.out.println(worldY);
+            double worldY = ((half) - (i * pixelSize));
+
+            System.out.println("Calculating Row: [" + i + '/' + c.getHeight() + ']');
 
             for (int j = 0; j < c.getWidth(); j++) {
-                int worldX = (int) (-(c.getHeight() / 2) + j);
+                double worldX = ((-half) + (j * pixelSize));
 
-                Point position = new Point(worldX, worldY, 10);
+                Point wall = new Point(worldX, worldY, 10);
 
-                Ray ray = new Ray(new Point(0, 0, -5), position.subtract(new Point(0, 0, -5)).normalize());
+                // Point wall = new Point(i-100, j, 0);
 
-                var x = ray.intersects(s);
+                Ray ray = new Ray(new Point(0, 0, -5), wall.subtract(new Point(0, 0, -5)).normalize());
 
-                if (x != null) {
+                if (ray.intersects(s) != null) {
                     c.writePixel(i, j, red);
                 }
             }

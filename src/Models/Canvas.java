@@ -32,7 +32,7 @@ public class Canvas {
 
     public boolean toPPM() {
 
-        System.out.println("Outputing File of Res: [" + (height ) + " / " + height + "]");
+        System.out.println("Outputing File of Resolution: [" + (height ) + " x " + height + "]");
 
         String ppmStartString = "P3\n" + width + " " + height + "\n255\n";
 
@@ -59,7 +59,7 @@ public class Canvas {
         }
 
         Long endTime = System.nanoTime();
-        System.out.println("Rendering done in:  " + (endTime - startTime) / 1000000 + "ms");
+        System.out.println("File Output done in: " + (endTime - startTime) / 1000000 + "ms");
         return true;
     }
 
