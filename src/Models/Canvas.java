@@ -32,6 +32,8 @@ public class Canvas {
 
     public boolean toPPM() {
 
+        System.out.println("Outputing File of Res: [" + (height ) + " / " + height + "]");
+
         String ppmStartString = "P3\n" + width + " " + height + "\n255\n";
 
         Long startTime = System.nanoTime();
@@ -47,7 +49,6 @@ public class Canvas {
                     buffer.write(c.red() + " " + c.green() + " " + c.blue() + " ");
                 }
                 buffer.write("\n");
-                System.out.println("Rendering pixel row: [" + (height - i) + " / " + height + "]");
             }
             buffer.close();
 

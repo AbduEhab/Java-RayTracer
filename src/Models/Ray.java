@@ -20,6 +20,18 @@ public class Ray {
         return s.intersects(this);
     }
 
+    public Ray transform(Matrix matrix) { // possible problem related to deep cloning
+
+        Point newOrigin = matrix.multiply(origin);
+        Vector newdirection = matrix.multiply(direction);
+
+        return new Ray(newOrigin, newdirection);
+    }
+
+    public String toString() {
+        return "Ray: { " + origin + ", " + direction + " }";
+    }
+
     public Point getOrigin() {
         return origin;
     }

@@ -6,6 +6,8 @@ import Models.Enviroment;
 import Models.Matrix;
 import Models.Point;
 import Models.Projectile;
+import Models.Ray;
+import Models.Sphere;
 import Models.Vector;
 
 public class Main {
@@ -15,7 +17,9 @@ public class Main {
 
         // var c = ProjectilePath();
 
-        var c = hourClock();
+        // var c = hourClock();
+
+        var c = circle();
 
         Long endTime = System.nanoTime();
         System.out.println("Pixel Calculation done in: " + (endTime - startTime) / 1000000 + "ms");
@@ -52,6 +56,40 @@ public class Main {
             c.writePixel((int) hourPoint.getX() + 300, (int) hourPoint.getY() + 300, new Color(255, 255, 255));
             hourPoint = Matrix.IDENTITY.rotateZ(Math.PI / 6).multiply(hourPoint);
         }
+        return c;
+    }
+
+    private static Canvas circle() {// program 2
+        var c = new Canvas(100, 100);
+
+        Color red = new Color(255, 0, 0);
+
+        Sphere s = new Sphere();
+
+        int wallSize = 7;
+        double pixelSize = wallSize / (c.getHeight() + 0.0);
+
+        double half = wallSize / 2.0;
+
+        for (int i = 0; i < c.getHeight(); i++) {
+            int worldY = (int) ((-c.getHeight() / 2) + i);
+            System.out.println(worldY);
+
+            for (int j = 0; j < c.getWidth(); j++) {
+                int worldX = (int) (-(c.getHeight() / 2) + j);
+
+                Point position = new Point(worldX, worldY, 10);
+
+                Ray ray = new Ray(new Point(0, 0, -5), position.subtract(new Point(0, 0, -5)).normalize());
+
+                var x = ray.intersects(s);
+
+                if (x != null) {
+                    c.writePixel(i, j, red);
+                }
+            }
+        }
+
         return c;
     }
 }

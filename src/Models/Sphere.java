@@ -6,6 +6,7 @@ public class Sphere {
 
     private int radius;
     private Point center = new Point();
+    private Matrix transform = Matrix.IDENTITY;
 
     public Sphere() {
         radius = 1;
@@ -16,6 +17,8 @@ public class Sphere {
     }
 
     public ArrayList<Intersection> intersects(Ray ray) { // fix
+        ray = ray.transform(transform.inverse());
+
         Vector sphereToRay = ray.getOrigin().subtract(center);
 
         double a = ray.getDirection().dot(ray.getDirection());
@@ -38,6 +41,14 @@ public class Sphere {
 
     public Point getCenter() {
         return center;
+    }
+
+    public Matrix getTransform() {
+        return transform;
+    }
+
+    public void setTransform(Matrix transform) {
+        this.transform = transform;
     }
 
 }
