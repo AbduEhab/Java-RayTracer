@@ -9,15 +9,15 @@ public class Color extends Tuple {
     }
 
     public Color add(Tuple b) {
-        return new Color(red() + b.getX(), green() + b.getY(), blue() + b.getZ());
+        return new Color(getX() + b.getX(), getY() + b.getY(), getZ() + b.getZ());
     }
 
     public Color subtract(Tuple b) {
-        return new Color(red() - b.getX(), green() - b.getY(), blue() - b.getZ());
+        return new Color(getX() - b.getX(), getY() - b.getY(), getZ() - b.getZ());
     }
 
     public Color multiply(double factor) {
-        return new Color(red() * factor, green() * factor, blue() * factor);
+        return new Color(getX() * factor, getY() * factor, getZ() * factor);
     }
 
     public Color multiply(Color b) {

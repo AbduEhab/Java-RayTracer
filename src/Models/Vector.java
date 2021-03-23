@@ -50,6 +50,10 @@ public class Vector extends Tuple {
                 getX() * b.getY() - getY() * b.getX());
     }
 
+    public Vector reflect(Vector b) {
+        return subtract(b.multiply(2 * dot(b)));
+    }
+
     public String toString() {
         return "Vector: [" + getX() + ", " + getY() + ", " + getZ() + "]";
     }

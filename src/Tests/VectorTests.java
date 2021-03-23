@@ -89,4 +89,21 @@ public class VectorTests {
         assertEquals(-1, res.getZ(), "Vector cross (Z) method is not valid");
     }
 
+    @Test
+    @DisplayName("reflect Vector")
+    public void reflect() {
+
+        Vector a = new Vector(1, -1, 0);
+        Vector b = new Vector(0, -1, 0);
+
+        Vector n1 = new Vector(0, 1, 0);
+        Vector n2 = new Vector(Math.sqrt(2) / 2, Math.sqrt(2) / 2, 0);
+
+        Vector res1 = new Vector(1, 1, 0);
+        Vector res2 = new Vector(1, 0, 0);
+
+        //assertEquals(true, a.reflect(n1).equals(res1), "Vector reflect method is not valid");
+        assertEquals(true, b.reflect(n2).equals(res2), "Vector reflect method is not valid");
+    }
+
 }

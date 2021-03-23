@@ -2,21 +2,18 @@ package Models;
 
 import java.util.ArrayList;
 
-public class Sphere {
+public class Sphere extends Shape {
 
-    private int radius;
     private Point center = new Point();
     private Matrix transform = Matrix.IDENTITY;
 
     public Sphere() {
-        radius = 1;
     }
 
     public Sphere(int radius) {
-        this.radius = radius;
     }
 
-    public ArrayList<Intersection> intersects(Ray ray) { // fix
+    public ArrayList<Intersection> intersects(Ray ray) {
         ray = ray.transform(transform.inverse());
 
         Vector sphereToRay = ray.getOrigin().subtract(center);
@@ -39,6 +36,18 @@ public class Sphere {
         return retVaues;
     }
 
+    public Vector normalAt(Point p) {
+        Point objectPoint = transform.inverse().multiply(p);
+
+        Vector objectNormal = objectPoint.subtract(center);
+
+        Vector worldNormal = transform.inverse().transpose().multiply(objectNormal);
+
+        worldNormal.setW(0);
+
+        return worldNormal.normalize();
+    }
+
     public Point getCenter() {
         return center;
     }
@@ -49,6 +58,14 @@ public class Sphere {
 
     public void setTransform(Matrix transform) {
         this.transform = transform;
+    }
+
+    public Material getMaterial() {
+        return material;
+    }
+
+    public void setMaterial(Material material) {
+        this.material = material;
     }
 
 }

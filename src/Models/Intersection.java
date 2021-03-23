@@ -5,11 +5,11 @@ import java.util.ArrayList;
 public class Intersection {
 
     private double t;
-    private Object object;
+    private Shape shape;
 
-    public Intersection(double t, Object object) {
+    public Intersection(double t, Shape shape) {
         this.t = t;
-        this.object = object;
+        this.shape = shape;
     }
 
     public static ArrayList<Intersection> intersections(Intersection inters1, Intersection inters2) {
@@ -56,8 +56,8 @@ public class Intersection {
         return t;
     }
 
-    public Object getObject() {
-        return object;
+    public Shape getShape() {
+        return shape;
     }
 
 }
