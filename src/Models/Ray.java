@@ -16,8 +16,13 @@ public class Ray {
         return origin.add(direction.multiply(t));
     }
 
-    public ArrayList<Intersection> intersects(Sphere s) {
+    public ArrayList<Intersection> intersects(Shape s) {
         return s.intersects(this);
+    }
+
+    public ArrayList<Intersection> intersects(World w) { // possibly redundant, used for debugging
+
+        return w.intersects(this);
     }
 
     public Ray transform(Matrix matrix) { // possible problem related to deep cloning

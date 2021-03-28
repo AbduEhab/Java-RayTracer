@@ -23,7 +23,7 @@ public class Main {
 
         // var c = circle(100);
 
-        var c = sphere(100);
+        var c = sphere(300);
 
         Long endTime = System.nanoTime();
         System.out.println("Pixel Calculation done in: " + (endTime - startTime) / 1000000 + "ms");
@@ -108,11 +108,11 @@ public class Main {
         Sphere s = new Sphere();
 
         Material m = new Material();
-        m.setColor(new Color(100, 20, 100));
+        m.setColor(new Color(1, 0.2, 1));
 
-        s.material = m;
+        s.setMaterial(m);
 
-        PointLight l = new PointLight(new Color(100, 100, 100), new Point(-10, 10, -10));
+        PointLight l = new PointLight(new Color(255, 255, 255), new Point(-10, 10, -10));
 
         int wallSize = 7;
         double pixelSize = wallSize / (c.getHeight() + 0.0);
@@ -129,8 +129,6 @@ public class Main {
 
                 Point wall = new Point(worldX, worldY, 10);
 
-                // Point wall = new Point(i-100, j, 0);
-
                 Ray ray = new Ray(new Point(0, 0, -5), wall.subtract(new Point(0, 0, -5)).normalize());
 
                 var intersections = ray.intersects(s);
@@ -140,7 +138,7 @@ public class Main {
                     Vector normalVector = intersections.get(0).getShape().normalAt(hitPoint);
                     Vector eyeVector = ray.getDirection().multiply(-1);
 
-                    Color color = intersections.get(0).getShape().material.lighting(l, hitPoint, eyeVector,
+                    Color color = intersections.get(0).getShape().getMaterial().lighting(l, hitPoint, eyeVector,
                             normalVector);
 
                     c.writePixel(i, j, color);

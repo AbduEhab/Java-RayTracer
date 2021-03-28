@@ -27,29 +27,61 @@ public class Intersection {
 
     public static Intersection hit(ArrayList<Intersection> intersections) {
 
-        Intersection[] arr = new Intersection[intersections.size()];
+        intersections = sort(intersections);
 
-        for (int i = 0; i < intersections.size(); i++) {
-            arr[i] = intersections.get(i);
-        }
-
-        for (int i = 0; i < intersections.size(); i++) {
-            Intersection temp;
-            for (int j = 1; j < arr.length - 1; j++) {
-                if (arr[j - 1].getT() > arr[j].getT()) {
-                    temp = arr[j - 1];
-                    arr[j - 1] = arr[j];
-                    arr[j] = temp;
-                }
-
-            }
-        }
-        for (Intersection intersection : arr) {
+        for (Intersection intersection : intersections) {
             if (intersection.getT() > 0)
                 return intersection;
         }
 
         return null;
+    }
+
+    public static ArrayList<Intersection> sort(ArrayList<Intersection> intersections) {
+
+        if (Intersection.isSorted(intersections))
+            return intersections;
+
+        for (int i = 0; i < intersections.size(); i++) {
+            Intersection temp;
+            for (int j = 1; j < intersections.size(); j++) {
+                if (intersections.get(j - 1).getT() > intersections.get(j).getT()) {
+                    temp = intersections.get(j - 1);
+                    intersections.set(j - 1, intersections.get(j));
+                    intersections.set(j, temp);
+                }
+
+            }
+        }
+
+        return intersections;
+    }
+
+    private static boolean isSorted(ArrayList<Intersection> intersections) {
+        for (int i = 1; i < intersections.size(); i++) {
+            if (intersections.get(i - 1).getT() > intersections.get(i).getT())
+                return false;
+        }
+        return true;
+    }
+
+    public Computation prepareComputate(Ray ray) {
+
+        double t2 = t;
+        Shape s = shape;
+        Point p = ray.position(t);
+        Vector eyeVector = ray.getDirection().multiply(-1);
+        Vector normalVector = s.normalAt(p);
+
+        boolean inside = false;
+
+        if (normalVector.dot(eyeVector) < 0) {
+            inside = true;
+            normalVector = normalVector.multiply(-1);
+        }
+
+        return new Computation(t2, s, p, eyeVector, normalVector, inside);
+
     }
 
     public double getT() {

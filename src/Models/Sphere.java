@@ -4,19 +4,13 @@ import java.util.ArrayList;
 
 public class Sphere extends Shape {
 
-    private Point center = new Point();
-    private Matrix transform = Matrix.IDENTITY;
-
     public Sphere() {
     }
 
-    public Sphere(int radius) {
-    }
-
     public ArrayList<Intersection> intersects(Ray ray) {
-        ray = ray.transform(transform.inverse());
+        ray = ray.transform(getTransform().inverse());
 
-        Vector sphereToRay = ray.getOrigin().subtract(center);
+        Vector sphereToRay = ray.getOrigin().subtract(new Point());
 
         double a = ray.getDirection().dot(ray.getDirection());
         double b = 2 * ray.getDirection().dot(sphereToRay);
@@ -37,35 +31,25 @@ public class Sphere extends Shape {
     }
 
     public Vector normalAt(Point p) {
-        Point objectPoint = transform.inverse().multiply(p);
+        Point objectPoint = getTransform().inverse().multiply(p);
 
-        Vector objectNormal = objectPoint.subtract(center);
+        Vector objectNormal = objectPoint.subtract(new Point());
 
-        Vector worldNormal = transform.inverse().transpose().multiply(objectNormal);
+        Vector worldNormal = getTransform().inverse().transpose().multiply(objectNormal);
 
         worldNormal.setW(0);
 
         return worldNormal.normalize();
     }
 
-    public Point getCenter() {
-        return center;
-    }
+    public boolean equals(Shape s) {
+        if (!(s instanceof Sphere))
+            return false;
 
-    public Matrix getTransform() {
-        return transform;
-    }
+        if (getMaterial().equals(s.getMaterial()) && getTransform().equals(s.getTransform()))
+            return true;
 
-    public void setTransform(Matrix transform) {
-        this.transform = transform;
-    }
-
-    public Material getMaterial() {
-        return material;
-    }
-
-    public void setMaterial(Material material) {
-        this.material = material;
+        return false;
     }
 
 }

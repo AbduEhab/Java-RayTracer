@@ -6,7 +6,7 @@ public class Matrix {
 
     private static final double[][] IdentityArray = { { 1, 0, 0, 0 }, { 0, 1, 0, 0 }, { 0, 0, 1, 0 }, { 0, 0, 0, 1 } };
 
-    public static Matrix IDENTITY = new Matrix(4, IdentityArray);
+    public static final Matrix IDENTITY = new Matrix(4, IdentityArray);
 
     public Matrix(int size) {
         matrix = new double[size][size];
@@ -269,13 +269,14 @@ public class Matrix {
     public String toString() {
         String s = "";
         for (int i = 0; i < size; i++) {
+            s += "|\t";
             for (int j = 0; j < size; j++) {
                 s += matrix[i][j];
                 if (j != 3)
                     s += "\t|\t";
             }
             ;
-            s += "\n";
+            s += "\t|\n";
         }
 
         return s;

@@ -2,11 +2,11 @@ package Models;
 
 public class Material {
 
-    Color color;
-    double ambient;
-    double diffuse;
-    double specular;
-    double shininess;
+    private Color color = new Color(1, 1, 1);;
+    private double ambient = 0.1;;
+    private double diffuse = 0.9;
+    private double specular = 0.9;;
+    private double shininess = 200;
 
     public Material() {
         color = new Color(1, 1, 1);
@@ -17,20 +17,25 @@ public class Material {
     }
 
     public Material(Color color, double ambient, double diffuse, double specular, double shininess) {
-        this.color = color;
-        this.ambient = ambient;
-        this.diffuse = diffuse;
-        this.specular = specular;
-        this.shininess = shininess;
+        if (color != null)
+            this.color = color;
+        if (ambient >= 0)
+            this.ambient = ambient;
+        if (diffuse >= 0)
+            this.diffuse = diffuse;
+        if (specular >= 0)
+            this.specular = specular;
+        if (shininess >= 0)
+            this.shininess = shininess;
     }
 
     public Color lighting(PointLight light, Point point, Vector eyevVector, Vector normalVector) {
 
-        Color effColor = color.multiply(light.intensity);
+        Color effColor = color.multiply(light.getIntensity());
 
-        Vector lightVector = light.position.subtract(point).normalize();
+        Vector lightVector = light.getPosition().subtract(point).normalize();
 
-        Color resAmbient = color.multiply(ambient);
+        Color resAmbient = effColor.multiply(ambient);
 
         double lightDotNormal = lightVector.dot(normalVector);
 
@@ -54,7 +59,7 @@ public class Material {
 
             else {
                 double factor = Math.pow(reflectDotEye, shininess);
-                resSpecular = light.intensity.multiply(specular * factor);
+                resSpecular = light.getIntensity().multiply(specular * factor);
             }
         }
         return resAmbient.add(resDiffuse).add(resSpecular);

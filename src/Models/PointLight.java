@@ -2,8 +2,8 @@ package Models;
 
 public class PointLight {
 
-    Color intensity;
-    Point position;
+    private Color intensity;
+    private Point position;
 
     public PointLight() {
         intensity = new Color(1, 1, 1);
@@ -15,11 +15,17 @@ public class PointLight {
         this.position = position;
     }
 
+    public boolean equals(PointLight p) {
+
+        return (intensity.equals(p.intensity)) && (position.equals(p.position));
+    }
+
     public Color getIntensity() {
         return intensity;
     }
 
     public void setIntensity(Color intensity) {
+        System.out.println(0);
         this.intensity = intensity;
     }
 
