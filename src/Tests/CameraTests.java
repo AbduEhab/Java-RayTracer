@@ -6,9 +6,13 @@ import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 
 import Models.Camera;
+import Models.Canvas;
+import Models.Color;
 import Models.Matrix;
 import Models.Point;
+import Models.Ray;
 import Models.Vector;
+import Models.World;
 
 public class CameraTests {
 
@@ -69,4 +73,55 @@ public class CameraTests {
                 "Camera transform method is not implemented correctly");
     }
 
+    @Test
+    @DisplayName("PixelSize Check")
+    public void constructorCheck() {
+
+        Camera c = new Camera(200, 125, Math.PI / 2);
+        Camera c2 = new Camera(125, 200, Math.PI / 2);
+
+        assertEquals(true, 0.01 - c.getPixelSize() <= 0.001, "Camera constructor is not implemented correctly");
+        assertEquals(true, 0.01 - c2.getPixelSize() <= 0.001, "Camera constructor is not implemented correctly");
+
+    }
+
+    @Test
+    @DisplayName("Constructing a ray through the canvus")
+    public void rayForPixel() {
+
+        Camera c = new Camera(201, 101, Math.PI / 2);
+
+        Ray res = c.rayForPixel(100, 50);
+        assertEquals(true, res.getOrigin().equals(new Point()), "Camera RayForPixel is not implemented correctly");
+        assertEquals(true, res.getDirection().equals(new Vector(0, 0, -1)),
+                "Camera RayForPixel is not implemented correctly");
+
+        res = c.rayForPixel(0, 0);
+        assertEquals(true, res.getOrigin().equals(new Point()), "Camera RayForPixel is not implemented correctly");
+        assertEquals(true, res.getDirection().equals(new Vector(0.66519, 0.33259, -0.66851)),
+                "Camera RayForPixel is not implemented correctly");
+
+        c.setTransform(Matrix.IDENTITY.rotateY(Math.PI / 4).translate(0, -2, 5));
+        res = c.rayForPixel(100, 50);
+        assertEquals(true, res.getOrigin().equals(new Point(0, 2, -5)),
+                "Camera RayForPixel is not implemented correctly");
+        assertEquals(true, res.getDirection().equals(new Vector(Math.sqrt(2) / 2, 0, -Math.sqrt(2) / 2)),
+                "Camera RayForPixel is not implemented correctly");
+    }
+
+    @Test
+    @DisplayName("Rendering a world with a camera")
+    public void render() {
+
+        World w = World.defaultWorld();
+        Camera c = new Camera(11, 11, Math.PI / 2);
+
+        c.transform(new Point(0, 0, -5), new Point(0, 0, 0), new Vector(0, -1, 0));
+
+        Canvas canv = c.render(w);
+
+        assertEquals(true, canv.getPixel()[5][5].equals(new Color(0.38066, 0.47583, 0.2855)),
+                "Camera render method is not implemented correctly");
+
+    }
 }

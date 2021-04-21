@@ -55,7 +55,7 @@ public class Vector extends Tuple {
     }
 
     public String toString() {
-        return "Vector: [" + getX() + ", " + getY() + ", " + getZ() + "]";
+        return "<" + getX() + ", " + getY() + ", " + getZ() + ">";
     }
 
 }

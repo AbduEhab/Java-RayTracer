@@ -13,15 +13,23 @@ public class Intersection {
     }
 
     public static ArrayList<Intersection> intersections(Intersection inters1, Intersection inters2) {
+
         ArrayList<Intersection> retVaues = new ArrayList<Intersection>();
 
-        retVaues.add(inters1);
-        retVaues.add(inters2);
+        if (inters1 != null)
+            retVaues.add(inters1);
+
+        if (inters2 != null)
+            retVaues.add(inters2);
+
         return retVaues;
     }
 
     public static ArrayList<Intersection> intersections(ArrayList<Intersection> list1, ArrayList<Intersection> list2) {
-        list1.addAll(list2);
+
+        if (list2 != null)
+            list1.addAll(list2);
+
         return list1;
     }
 

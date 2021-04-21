@@ -16,6 +16,11 @@ public class Material {
         shininess = 200;
     }
 
+    public String toString() {
+        return "[ Color: " + color + ", Ambient" + ambient + ", Diffuse: " + diffuse + ", Specular: " + specular
+                + ", Shininess: " + shininess + " ]";
+    }
+
     public Material(Color color, double ambient, double diffuse, double specular, double shininess) {
         if (color != null)
             this.color = color;
@@ -74,40 +79,45 @@ public class Material {
         return color;
     }
 
-    public void setColor(Color color) {
+    public Material setColor(Color color) {
         this.color = color;
+        return this;
     }
 
     public double getAmbient() {
         return ambient;
     }
 
-    public void setAmbient(double ambient) {
+    public Material setAmbient(double ambient) {
         this.ambient = ambient;
+        return this;
     }
 
     public double getDiffuse() {
         return diffuse;
     }
 
-    public void setDiffuse(double diffuse) {
+    public Material setDiffuse(double diffuse) {
         this.diffuse = diffuse;
+        return this;
     }
 
     public double getShininess() {
         return shininess;
     }
 
-    public void setShininess(double shininess) {
+    public Material setShininess(double shininess) {
         this.shininess = shininess;
+        return this;
     }
 
     public double getSpecular() {
         return specular;
     }
 
-    public void setSpecular(double specular) {
+    public Material setSpecular(double specular) {
         this.specular = specular;
+        return this;
     }
 
 }

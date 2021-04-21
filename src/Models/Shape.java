@@ -14,6 +14,8 @@ abstract public class Shape {
 
     abstract public boolean equals(Shape s);
 
+    abstract public String toString();
+
     public Material getMaterial() {
         return material;
     }

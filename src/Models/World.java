@@ -61,6 +61,30 @@ public class World {
         return shadeHit(c);
     }
 
+    public void addShape(Shape s) {
+        shapes.add(s);
+    }
+
+    public void addShape(Shape[] s) {
+
+        for (Shape shape : s) {
+            shapes.add(shape);
+        }
+
+    }
+
+    public void addLight(PointLight l) {
+        lights.add(l);
+    }
+
+    public void addLight(PointLight[] l) {
+
+        for (PointLight pointLight : lights) {
+            lights.add(pointLight);
+        }
+
+    }
+
     public ArrayList<Shape> getShapes() {
         return shapes;
     }

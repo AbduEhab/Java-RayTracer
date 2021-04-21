@@ -4,9 +4,6 @@ import java.util.ArrayList;
 
 public class Sphere extends Shape {
 
-    public Sphere() {
-    }
-
     public ArrayList<Intersection> intersects(Ray ray) {
         ray = ray.transform(getTransform().inverse());
 
@@ -50,6 +47,11 @@ public class Sphere extends Shape {
             return true;
 
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "Sphere: " + hashCode();
     }
 
 }

@@ -6,12 +6,14 @@ public class PointLight {
     private Point position;
 
     public PointLight() {
-        intensity = new Color(1, 1, 1);
+        intensity = new Color(255, 255, 255);
         position = new Point();
     }
 
     public PointLight(Color intensity, Point position) {
         this.intensity = intensity;
+        setIntensity(intensity);
+
         this.position = position;
     }
 
@@ -25,8 +27,10 @@ public class PointLight {
     }
 
     public void setIntensity(Color intensity) {
-        System.out.println(0);
-        this.intensity = intensity;
+
+        this.intensity.setX(intensity.getX() * 255);
+        this.intensity.setY(intensity.getY() * 255);
+        this.intensity.setZ(intensity.getZ() * 255);
     }
 
     public Point getPosition() {
@@ -35,6 +39,10 @@ public class PointLight {
 
     public void setPosition(Point position) {
         this.position = position;
+    }
+
+    public String toString() {
+        return "[ Intensity: " + intensity + ", Position: " + position + " ]";
     }
 
 }

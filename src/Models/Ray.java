@@ -34,7 +34,7 @@ public class Ray {
     }
 
     public String toString() {
-        return "Ray: { " + origin + ", " + direction + " }";
+        return "{ Origin: " + origin + ", Direction: " + direction + " }";
     }
 
     public Point getOrigin() {

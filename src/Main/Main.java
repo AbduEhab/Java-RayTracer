@@ -1,5 +1,6 @@
 package Main;
 
+import Models.Camera;
 import Models.Canvas;
 import Models.Color;
 import Models.Enviroment;
@@ -9,8 +10,10 @@ import Models.Point;
 import Models.PointLight;
 import Models.Projectile;
 import Models.Ray;
+import Models.Shape;
 import Models.Sphere;
 import Models.Vector;
+import Models.World;
 
 public class Main {
     public static void main(String[] args) throws InterruptedException {
@@ -23,7 +26,9 @@ public class Main {
 
         // var c = circle(100);
 
-        var c = sphere(300);
+        // var c = sphere(300);
+
+        var c = testWorld();
 
         Long endTime = System.nanoTime();
         System.out.println("Pixel Calculation done in: " + (endTime - startTime) / 1000000 + "ms");
@@ -52,7 +57,7 @@ public class Main {
         return c;
     }
 
-    private static Canvas hourClock() { // Program 2 --chapter 4
+    private static Canvas hourClock() { // Program 2 --Chapter 4
         var c = new Canvas(600, 600);
 
         Point hourPoint = new Point(0, 3 * 600 / 8, 0);
@@ -67,7 +72,7 @@ public class Main {
         return c;
     }
 
-    private static Canvas circle(int size) {// program 3 --chapter 5
+    private static Canvas circle(int size) { // program 3 --Chapter 5
         var c = new Canvas(size, size);
 
         Color red = new Color(255, 0, 0);
@@ -102,7 +107,7 @@ public class Main {
         return c;
     }
 
-    private static Canvas sphere(int size) {
+    private static Canvas sphere(int size) { // program 4 --Chapter 6
         var c = new Canvas(size, size);
 
         Sphere s = new Sphere();
@@ -148,4 +153,45 @@ public class Main {
 
         return c;
     }
+
+    private static Canvas testWorld() { // program 5 --Chapter 7-8
+
+        Sphere floor = new Sphere();
+        floor.setTransform(Matrix.IDENTITY.scale(10, 0.01, 10));
+        floor.getMaterial().setColor(new Color(1, 0.9, 0.9)).setSpecular(0);
+
+        Sphere leftWall = new Sphere();
+        leftWall.setTransform(
+                Matrix.IDENTITY.translate(0, 0, 5).rotateY(-Math.PI / 4).rotateX(Math.PI / 2).scale(10, 0.01, 10));
+        leftWall.setMaterial(floor.getMaterial());
+
+        Sphere rightWall = new Sphere();
+        rightWall.setTransform(
+                Matrix.IDENTITY.translate(0, 0, 5).rotateY(Math.PI / 4).rotateX(Math.PI / 2).scale(10, 0.01, 10));
+        rightWall.setMaterial(floor.getMaterial());
+
+        Sphere middleSphere = new Sphere();
+        middleSphere.setTransform(Matrix.IDENTITY.translate(-0.5, 1, 0.5));
+        middleSphere.getMaterial().setColor(new Color(0.1, 1, 0.5)).setDiffuse(0.7).setSpecular(0.3);
+
+        Sphere rightSphere = new Sphere();
+        rightSphere.setTransform(Matrix.IDENTITY.translate(1.5, 0.5, -0.5).scale(0.5, 0.5, 0.5));
+        rightSphere.getMaterial().setColor(new Color(0.5, 1, 0.1)).setDiffuse(0.7).setSpecular(0.3);
+
+        Sphere leftSphere = new Sphere();
+        leftSphere.setTransform(Matrix.IDENTITY.translate(-1.5, 0.33, -0.75).scale(0.33, 0.33, 0.33));
+        leftSphere.getMaterial().setColor(new Color(1, 0.8, 0.1)).setDiffuse(0.7).setSpecular(0.3);
+
+        World w = new World();
+
+        w.addShape(new Shape[] { floor, leftSphere, rightSphere, middleSphere, floor, leftWall, rightWall });
+
+        w.addLight(new PointLight(new Color(1, 1, 1), new Point(-10, 10, -10)));
+
+        Camera c = new Camera(200, 120, Math.PI / 3);
+        c.transform(new Point(0, 1.5, -5), new Point(0, 1, 0), new Vector(0, 1, 0));
+
+        return c.render(w);
+    }
+
 }

@@ -102,7 +102,7 @@ public class VectorTests {
         Vector res1 = new Vector(1, 1, 0);
         Vector res2 = new Vector(1, 0, 0);
 
-        //assertEquals(true, a.reflect(n1).equals(res1), "Vector reflect method is not valid");
+        assertEquals(true, a.reflect(n1).equals(res1), "Vector reflect method is not valid");
         assertEquals(true, b.reflect(n2).equals(res2), "Vector reflect method is not valid");
     }
 

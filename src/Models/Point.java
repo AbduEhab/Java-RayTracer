@@ -19,7 +19,7 @@ public class Point extends Tuple {
     }
 
     public String toString() {
-        return "Point is: ( " + getX() + ", " + getY() + ", " + getZ() + ")\n";
+        return "( " + getX() + ", " + getY() + ", " + getZ() + ")";
     }
 
 }

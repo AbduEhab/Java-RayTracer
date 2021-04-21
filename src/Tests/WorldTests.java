@@ -10,7 +10,6 @@ import org.junit.jupiter.api.DisplayName;
 import Models.Color;
 import Models.Computation;
 import Models.Intersection;
-import Models.Matrix;
 import Models.Point;
 import Models.PointLight;
 import Models.Ray;
@@ -61,8 +60,6 @@ public class WorldTests {
     @Test
     @DisplayName("Pre-Computation")
     public void prepareCompute() {
-
-        World w = World.defaultWorld();
 
         Ray r = new Ray(new Point(0, 0, -5), new Vector(0, 0, 1));
 
