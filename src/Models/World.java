@@ -40,8 +40,11 @@ public class World {
 
         Color res = new Color(0, 0, 0);
         for (PointLight pointLight : lights) {
+
+            boolean inShadow = isShadowed(c.getOverPoint(), pointLight);
+
             res = res.add(c.getShape().getMaterial().lighting(pointLight, c.getPoint(), c.getEyeVector(),
-                    c.getNormalVector()));
+                    c.getNormalVector(), inShadow));
         }
 
         return res;
@@ -59,6 +62,25 @@ public class World {
         Computation c = hit.prepareComputate(ray);
 
         return shadeHit(c);
+    }
+
+    public boolean isShadowed(Point p, PointLight light) {
+
+        Vector v = light.getPosition().subtract(p);
+
+        double distance = v.magnitude();
+        Vector direction = v.normalize();
+
+        Ray r = new Ray(p, direction);
+        ArrayList<Intersection> intersection = intersects(r);
+
+        Intersection hit = Intersection.hit(intersection);
+
+        if (hit != null && hit.getT() < distance) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void addShape(Shape s) {

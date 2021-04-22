@@ -111,7 +111,7 @@ public class CameraTests {
 
     @Test
     @DisplayName("Rendering a world with a camera")
-    public void render() {
+    public void render() throws InterruptedException {
 
         World w = World.defaultWorld();
         Camera c = new Camera(11, 11, Math.PI / 2);

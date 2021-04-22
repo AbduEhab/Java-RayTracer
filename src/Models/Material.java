@@ -34,7 +34,7 @@ public class Material {
             this.shininess = shininess;
     }
 
-    public Color lighting(PointLight light, Point point, Vector eyevVector, Vector normalVector) {
+    public Color lighting(PointLight light, Point point, Vector eyevVector, Vector normalVector, boolean inShadow) {
 
         Color effColor = color.multiply(light.getIntensity());
 
@@ -44,15 +44,11 @@ public class Material {
 
         double lightDotNormal = lightVector.dot(normalVector);
 
-        Color resDiffuse;
-        Color resSpecular;
+        Color resDiffuse = new Color(0, 0, 0);
+        Color resSpecular = new Color(0, 0, 0);
 
-        if (lightDotNormal < 0) {
+        if (!inShadow && lightDotNormal >= 0) {
 
-            resDiffuse = new Color(0, 0, 0);
-            resSpecular = new Color(0, 0, 0);
-
-        } else {
             resDiffuse = effColor.multiply(diffuse * lightDotNormal);
 
             Vector reflectVector = lightVector.multiply(-1).reflect(normalVector);
@@ -67,8 +63,8 @@ public class Material {
                 resSpecular = light.getIntensity().multiply(specular * factor);
             }
         }
-        return resAmbient.add(resDiffuse).add(resSpecular);
 
+        return resAmbient.add(resDiffuse).add(resSpecular);
     }
 
     public boolean equals(Material b) {

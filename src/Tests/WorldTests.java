@@ -10,6 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import Models.Color;
 import Models.Computation;
 import Models.Intersection;
+import Models.Matrix;
 import Models.Point;
 import Models.PointLight;
 import Models.Ray;
@@ -125,6 +126,53 @@ public class WorldTests {
         assertEquals(true, color.equals(res), "World Shade Hit method is not implemented correctly");
     }
 
-    
+    @Test
+    @DisplayName("Shadow casting test")
+    public void inShadow() {
+
+        World w = World.defaultWorld();
+
+        Point p = new Point(0, 10, 0);
+        assertEquals(false, w.isShadowed(p, new PointLight(new Color(0, 0, 0), new Point(-10, 10, -10))),
+                "World isShadow is not valid");
+
+        p = new Point(10, -10, 10);
+        assertEquals(true, w.isShadowed(p, new PointLight(new Color(0, 0, 0), new Point(-10, 10, -10))),
+                "World isShadow is not valid");
+
+        p = new Point(-20, 20, -20);
+        assertEquals(false, w.isShadowed(p, new PointLight(new Color(0, 0, 0), new Point(-10, 10, -10))),
+                "World isShadow is not valid");
+
+        p = new Point(-2, 2, -2);
+        assertEquals(false, w.isShadowed(p, new PointLight(new Color(0, 0, 0), new Point(-10, 10, -10))),
+                "World isShadow is not valid");
+    }
+
+    @Test
+    @DisplayName("shade_hit() is given an intersection in shadow")
+    public void shadeHitInShadow() {
+
+        World w = new World();
+        w.addLight(new PointLight(new Color(1, 1, 1), new Point(0, 0, -10)));
+
+        Sphere s1 = new Sphere();
+        w.addShape(s1);
+
+        Sphere s2 = new Sphere();
+        s2.setTransform(Matrix.IDENTITY.translate(0, 0, 10));
+        w.addShape(s2);
+
+        Ray r = new Ray(new Point(0, 0, 5), new Vector(0, 0, 1));
+        Intersection intersection = new Intersection(4, s2);
+
+        Computation comp = intersection.prepareComputate(r);
+
+        Color result = w.shadeHit(comp);
+
+        Color expected = new Color(0.1, 0.1, 0.1);
+
+        assertEquals(true, result.equals(expected), "World Shade Hit in Shadow method is not implemented correctly");
+    }
 
 }

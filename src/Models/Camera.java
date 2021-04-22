@@ -1,5 +1,9 @@
 package Models;
 
+import java.util.ArrayList;
+
+import javax.xml.namespace.QName;
+
 public class Camera {
     private int hSize;
     private int vSize;
@@ -51,22 +55,66 @@ public class Camera {
         return new Ray(origin, direction);
     }
 
-    public Canvas render(World w) {
+    public Canvas render(World w) throws InterruptedException { // best bit of engineering I did in a while
         Canvas c = new Canvas(hSize, vSize);
 
-        for (int y = 0; y < vSize; y++) {
+        int cores = Runtime.getRuntime().availableProcessors();
+        ArrayList<Thread> threads = new ArrayList<Thread>();
 
-            System.out.println("Calculating Row: [" + y + '/' + c.getHeight() + ']');
+        if (cores > 1)
+            for (int i = 0; i < cores; i++) {
 
-            for (int x = 0; x < hSize; x++) {
+                final int index = i;
 
-                Ray ray = rayForPixel(x, y);
+                Runnable runnable = () -> {
+                    for (int y = index; y < vSize; y += cores) {
 
-                Color color = w.colorAt(ray);
+                        System.out.println(
+                                ">> Thread {" + index + "}: Calculating Row: [" + y + '/' + c.getHeight() + ']');
 
-                c.writePixel(x, y, color);
+                        for (int x = 0; x < hSize; x++) {
+
+                            Ray ray = rayForPixel(x, y);
+
+                            Color color = w.colorAt(ray);
+
+                            c.writePixel(x, y, color);
+                        }
+                    }
+                };
+
+                threads.add(new Thread(runnable));
+            }
+
+        if (!threads.isEmpty()) {
+
+            for (int i = 0; i < threads.size(); i++) {
+                threads.get(i).start();
+
+                if (i == cores - 1)
+                    threads.get(i).join();
+            }
+
+            for (Thread thread : threads) {
+                thread.join();
+            }
+
+        } else {
+            for (int y = 0; y < vSize; y++) {
+
+                System.out.println("Calculating Row: [" + y + '/' + c.getHeight() + ']');
+
+                for (int x = 0; x < hSize; x++) {
+
+                    Ray ray = rayForPixel(x, y);
+
+                    Color color = w.colorAt(ray);
+
+                    c.writePixel(x, y, color);
+                }
             }
         }
+
         return c;
     }
 

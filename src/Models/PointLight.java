@@ -12,8 +12,6 @@ public class PointLight {
 
     public PointLight(Color intensity, Point position) {
         this.intensity = intensity;
-        setIntensity(intensity);
-
         this.position = position;
     }
 
@@ -24,13 +22,6 @@ public class PointLight {
 
     public Color getIntensity() {
         return intensity;
-    }
-
-    public void setIntensity(Color intensity) {
-
-        this.intensity.setX(intensity.getX() * 255);
-        this.intensity.setY(intensity.getY() * 255);
-        this.intensity.setZ(intensity.getZ() * 255);
     }
 
     public Point getPosition() {

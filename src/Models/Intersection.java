@@ -22,7 +22,7 @@ public class Intersection {
         if (inters2 != null)
             retVaues.add(inters2);
 
-        return retVaues;
+        return sort(retVaues);
     }
 
     public static ArrayList<Intersection> intersections(ArrayList<Intersection> list1, ArrayList<Intersection> list2) {
@@ -88,7 +88,9 @@ public class Intersection {
             normalVector = normalVector.multiply(-1);
         }
 
-        return new Computation(t2, s, p, eyeVector, normalVector, inside);
+        Point overPoint = p.add(normalVector.multiply(0.00001));
+
+        return new Computation(t2, s, p, eyeVector, normalVector, inside, overPoint);
 
     }
 

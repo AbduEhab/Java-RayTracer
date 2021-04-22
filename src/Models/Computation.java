@@ -8,14 +8,17 @@ public class Computation {
     private Vector eyeVector;
     private Vector normalVector;
     private boolean inside;
+    private Point overPoint;
 
-    public Computation(double t, Shape s, Point p, Vector eyeVector, Vector normalVector, boolean inside) {
+    public Computation(double t, Shape s, Point p, Vector eyeVector, Vector normalVector, boolean inside,
+            Point overPoint) {
         this.t = t;
         this.s = s;
         this.p = p;
         this.eyeVector = eyeVector;
         this.normalVector = normalVector;
         this.inside = inside;
+        this.overPoint = overPoint;
     }
 
     public double getT() {
@@ -40,6 +43,10 @@ public class Computation {
 
     public Boolean isInside() {
         return inside;
+    }
+
+    public Point getOverPoint() {
+        return overPoint;
     }
 
 }

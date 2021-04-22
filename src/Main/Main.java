@@ -144,7 +144,7 @@ public class Main {
                     Vector eyeVector = ray.getDirection().multiply(-1);
 
                     Color color = intersections.get(0).getShape().getMaterial().lighting(l, hitPoint, eyeVector,
-                            normalVector);
+                            normalVector, false);
 
                     c.writePixel(i, j, color);
                 }
@@ -154,7 +154,7 @@ public class Main {
         return c;
     }
 
-    private static Canvas testWorld() { // program 5 --Chapter 7-8
+    private static Canvas testWorld() throws InterruptedException { // program 5 --Chapter 7-8
 
         Sphere floor = new Sphere();
         floor.setTransform(Matrix.IDENTITY.scale(10, 0.01, 10));
@@ -186,7 +186,7 @@ public class Main {
 
         w.addShape(new Shape[] { floor, leftSphere, rightSphere, middleSphere, floor, leftWall, rightWall });
 
-        w.addLight(new PointLight(new Color(1, 1, 1), new Point(-10, 10, -10)));
+        w.addLight(new PointLight(new Color(255, 255, 255), new Point(-10, 10, -10)));
 
         Camera c = new Camera(200, 120, Math.PI / 3);
         c.transform(new Point(0, 1.5, -5), new Point(0, 1, 0), new Vector(0, 1, 0));
