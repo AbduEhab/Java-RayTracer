@@ -7,16 +7,16 @@ import java.util.ArrayList;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 
-import Models.Color;
 import Models.Computation;
 import Models.Intersection;
 import Models.Matrix;
-import Models.Point;
 import Models.PointLight;
 import Models.Ray;
-import Models.Shape;
-import Models.Sphere;
-import Models.Vector;
+import Models.Shapes.Shape;
+import Models.Shapes.Sphere;
+import Models.Tuples.Color;
+import Models.Tuples.Point;
+import Models.Tuples.Vector;
 import Models.World;
 
 public class WorldTests {
@@ -98,7 +98,7 @@ public class WorldTests {
 
         Color color = w.shadeHit(c);
 
-        Color res = new Color(0.38066, 0.47583, 0.2855);
+        Color res = new Color(0.38066f, 0.47583f, 0.2855f);
 
         assertEquals(true, color.equals(res), "World Shade Hit method is not implemented correctly");
     }
@@ -109,19 +109,19 @@ public class WorldTests {
 
         World w = World.defaultWorld();
 
-        w.getLights().set(0, new PointLight(new Color(1, 1, 1), new Point(0, 0.25, 0)));
+        w.getLights().set(0, new PointLight(new Color(1, 1, 1), new Point(0, 0.25f, 0)));
 
         Ray r = new Ray(new Point(0, 0, 0), new Vector(0, 0, 1));
 
         Shape s = w.getShapes().get(1);
 
-        Intersection i = new Intersection(0.5, s);
+        Intersection i = new Intersection(0.5f, s);
 
         Computation c = i.prepareComputate(r);
 
         Color color = w.shadeHit(c);
 
-        Color res = new Color(0.90498, 0.90498, 0.90498);
+        Color res = new Color(0.90498f, 0.90498f, 0.90498f);
 
         assertEquals(true, color.equals(res), "World Shade Hit method is not implemented correctly");
     }
@@ -170,7 +170,7 @@ public class WorldTests {
 
         Color result = w.shadeHit(comp);
 
-        Color expected = new Color(0.1, 0.1, 0.1);
+        Color expected = new Color(0.1f, 0.1f, 0.1f);
 
         assertEquals(true, result.equals(expected), "World Shade Hit in Shadow method is not implemented correctly");
     }

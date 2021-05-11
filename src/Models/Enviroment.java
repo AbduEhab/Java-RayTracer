@@ -1,5 +1,7 @@
 package Models;
 
+import Models.Tuples.Vector;
+
 public class Enviroment {
     private Vector gravity;
     private Vector wind;

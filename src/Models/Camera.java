@@ -2,7 +2,9 @@ package Models;
 
 import java.util.ArrayList;
 
-import javax.xml.namespace.QName;
+import Models.Tuples.Color;
+import Models.Tuples.Point;
+import Models.Tuples.Vector;
 
 public class Camera {
     private int hSize;
@@ -11,7 +13,6 @@ public class Camera {
     private double pixelSize;
     private Matrix transform = Matrix.IDENTITY;
 
-    // private double halfView;
     private double halfHeight;
     private double halfWidth;
 
@@ -55,13 +56,34 @@ public class Camera {
         return new Ray(origin, direction);
     }
 
-    public Canvas render(World w) throws InterruptedException { // best bit of engineering I did in a while
+    public Canvas render(World w) {
+        Canvas c = new Canvas(hSize, vSize);
+
+        for (int y = 0; y < vSize; y++) {
+
+            System.out.println("Calculating Row: [" + y + '/' + c.getHeight() + ']');
+
+            for (int x = 0; x < hSize; x++) {
+
+                Ray ray = rayForPixel(x, y);
+
+                Color color = w.colorAt(ray);
+
+                c.writePixel(x, y, color);
+            }
+        }
+
+        return (c);
+    }
+
+    public Canvas renderMultiThread(World w, int coreCount) { // best bit of engineering I did in a while
         Canvas c = new Canvas(hSize, vSize);
 
         int cores = Runtime.getRuntime().availableProcessors();
         ArrayList<Thread> threads = new ArrayList<Thread>();
 
-        if (cores > 1)
+        if (coreCount < 1 || cores > coreCount) {
+
             for (int i = 0; i < cores; i++) {
 
                 final int index = i;
@@ -70,7 +92,7 @@ public class Camera {
                     for (int y = index; y < vSize; y += cores) {
 
                         System.out.println(
-                                ">> Thread {" + index + "}: Calculating Row: [" + y + '/' + c.getHeight() + ']');
+                                ">> Thread {" + index + "}: Calculating Row: [" + (y + 1) + '/' + c.getHeight() + ']');
 
                         for (int x = 0; x < hSize; x++) {
 
@@ -86,32 +108,70 @@ public class Camera {
                 threads.add(new Thread(runnable));
             }
 
-        if (!threads.isEmpty()) {
+            if (!threads.isEmpty()) {
+                try {
 
-            for (int i = 0; i < threads.size(); i++) {
-                threads.get(i).start();
+                    for (int i = 0; i < threads.size(); i++) {
+                        threads.get(i).start();
 
-                if (i == cores - 1)
-                    threads.get(i).join();
-            }
+                        if (i == cores - 1)
+                            threads.get(i).join();
+                    }
 
-            for (Thread thread : threads) {
-                thread.join();
+                    for (Thread thread : threads) {
+                        thread.join();
+                    }
+
+                } catch (Exception e) {
+                    System.err.println(e);
+                }
+
             }
 
         } else {
-            for (int y = 0; y < vSize; y++) {
 
-                System.out.println("Calculating Row: [" + y + '/' + c.getHeight() + ']');
+            for (int i = 0; i < coreCount; i++) {
 
-                for (int x = 0; x < hSize; x++) {
+                final int index = i;
 
-                    Ray ray = rayForPixel(x, y);
+                Runnable runnable = () -> {
+                    for (int y = index; y < vSize; y += coreCount) {
 
-                    Color color = w.colorAt(ray);
+                        System.out.println(">> Thread {" + (index + 1) + "}: Calculating Row: [" + (y + 1) + '/'
+                                + c.getHeight() + ']');
 
-                    c.writePixel(x, y, color);
+                        for (int x = 0; x < hSize; x++) {
+
+                            Ray ray = rayForPixel(x, y);
+
+                            Color color = w.colorAt(ray);
+
+                            c.writePixel(x, y, color);
+                        }
+                    }
+                };
+
+                threads.add(new Thread(runnable));
+            }
+
+            if (!threads.isEmpty()) {
+                try {
+
+                    for (int i = 0; i < threads.size(); i++) {
+                        threads.get(i).start();
+
+                        if (i == coreCount - 1)
+                            threads.get(i).join();
+                    }
+
+                    for (Thread thread : threads) {
+                        thread.join();
+                    }
+
+                } catch (Exception e) {
+                    System.err.println(e);
                 }
+
             }
         }
 

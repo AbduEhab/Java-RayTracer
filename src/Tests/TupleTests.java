@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 
-import Models.Point;
-import Models.Vector;
+import Models.Tuples.Point;
+import Models.Tuples.Vector;
 
 public class TupleTests {
 

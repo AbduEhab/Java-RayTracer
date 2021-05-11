@@ -1,4 +1,4 @@
-package Models;
+package Models.Tuples;
 
 public abstract class Tuple {
     private double[] components;

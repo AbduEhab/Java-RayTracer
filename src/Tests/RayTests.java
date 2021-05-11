@@ -6,9 +6,9 @@ import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 
 import Models.Matrix;
-import Models.Point;
 import Models.Ray;
-import Models.Vector;
+import Models.Tuples.Point;
+import Models.Tuples.Vector;
 
 public class RayTests {
     @Test

@@ -1,5 +1,8 @@
 package Models;
 
+import Models.Tuples.Color;
+import Models.Tuples.Point;
+
 public class PointLight {
 
     private Color intensity;

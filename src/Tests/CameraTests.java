@@ -7,12 +7,12 @@ import org.junit.jupiter.api.DisplayName;
 
 import Models.Camera;
 import Models.Canvas;
-import Models.Color;
+import Models.Tuples.Color;
 import Models.Matrix;
-import Models.Point;
 import Models.Ray;
-import Models.Vector;
 import Models.World;
+import Models.Tuples.Point;
+import Models.Tuples.Vector;
 
 public class CameraTests {
 

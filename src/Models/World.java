@@ -2,6 +2,12 @@ package Models;
 
 import java.util.ArrayList;
 
+import Models.Shapes.Shape;
+import Models.Shapes.Sphere;
+import Models.Tuples.Color;
+import Models.Tuples.Point;
+import Models.Tuples.Vector;
+
 public class World {
 
     private ArrayList<Shape> shapes = new ArrayList<Shape>();

@@ -2,21 +2,22 @@ package Main;
 
 import Models.Camera;
 import Models.Canvas;
-import Models.Color;
+import Models.Tuples.Color;
 import Models.Enviroment;
 import Models.Material;
 import Models.Matrix;
-import Models.Point;
 import Models.PointLight;
 import Models.Projectile;
 import Models.Ray;
-import Models.Shape;
-import Models.Sphere;
-import Models.Vector;
+import Models.Shapes.XZPlane;
+import Models.Shapes.Shape;
+import Models.Shapes.Sphere;
 import Models.World;
+import Models.Tuples.Point;
+import Models.Tuples.Vector;
 
 public class Main {
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         System.out.println("Started pixel calculation");
         Long startTime = System.nanoTime();
 
@@ -28,7 +29,9 @@ public class Main {
 
         // var c = sphere(300);
 
-        var c = testWorld();
+        // var c = testWorld1();
+
+        var c = testWorld2();
 
         Long endTime = System.nanoTime();
         System.out.println("Pixel Calculation done in: " + (endTime - startTime) / 1000000 + "ms");
@@ -77,7 +80,7 @@ public class Main {
 
         Color red = new Color(255, 0, 0);
 
-        Sphere s = new Sphere();
+        Models.Shapes.Sphere s = new Sphere();
 
         int wallSize = 7;
         double pixelSize = wallSize / (c.getHeight() + 0.0);
@@ -154,7 +157,7 @@ public class Main {
         return c;
     }
 
-    private static Canvas testWorld() throws InterruptedException { // program 5 --Chapter 7-8
+    private static Canvas testWorld1() { // program 5 --Chapter 7-8
 
         Sphere floor = new Sphere();
         floor.setTransform(Matrix.IDENTITY.scale(10, 0.01, 10));
@@ -184,14 +187,43 @@ public class Main {
 
         World w = new World();
 
-        w.addShape(new Shape[] { floor, leftSphere, rightSphere, middleSphere, floor, leftWall, rightWall });
+        w.addShape(new Shape[] { leftSphere, rightSphere, middleSphere, floor, leftWall, rightWall });
 
         w.addLight(new PointLight(new Color(255, 255, 255), new Point(-10, 10, -10)));
 
         Camera c = new Camera(200, 120, Math.PI / 3);
         c.transform(new Point(0, 1.5, -5), new Point(0, 1, 0), new Vector(0, 1, 0));
 
-        return c.render(w);
+        return c.renderMultiThread(w, -1);
+    }
+
+    private static Canvas testWorld2() { // program 5 --Chapter 7-8
+
+        Shape floor = new XZPlane();
+        floor.getMaterial().setColor(new Color(1, 0.9, 0.9)).setSpecular(0);
+
+        Sphere middleSphere = new Sphere();
+        middleSphere.setTransform(Matrix.IDENTITY.translate(-0.5, 1, 0.5));
+        middleSphere.getMaterial().setColor(new Color(0.1, 1, 0.5)).setDiffuse(0.7).setSpecular(0.3);
+
+        Sphere rightSphere = new Sphere();
+        rightSphere.setTransform(Matrix.IDENTITY.translate(1.5, 0.5, -0.5).scale(0.5, 0.5, 0.5));
+        rightSphere.getMaterial().setColor(new Color(0.5, 1, 0.1)).setDiffuse(0.7).setSpecular(0.3);
+
+        Sphere leftSphere = new Sphere();
+        leftSphere.setTransform(Matrix.IDENTITY.translate(-1.5, 0.33, -0.75).scale(0.33, 0.33, 0.33));
+        leftSphere.getMaterial().setColor(new Color(1, 0.8, 0.1)).setDiffuse(0.7).setSpecular(0.3);
+
+        World w = new World();
+
+        w.addShape(new Shape[] { floor, leftSphere, rightSphere, middleSphere });
+
+        w.addLight(new PointLight(new Color(255, 255, 255), new Point(-10, 10, -10)));
+
+        Camera c = new Camera(200, 120, Math.PI / 3);
+        c.transform(new Point(0, 1.5, -5), new Point(0, 1, 0), new Vector(0, 1, 0));
+
+        return c.renderMultiThread(w, -1);
     }
 
 }

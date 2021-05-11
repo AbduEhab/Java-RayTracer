@@ -1,4 +1,4 @@
-package Models;
+package Models.Tuples;
 
 public class Point extends Tuple {
 

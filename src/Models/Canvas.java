@@ -4,6 +4,8 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import Models.Tuples.Color;
+
 public class Canvas {
     private int width;
     private int height;

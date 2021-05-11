@@ -1,4 +1,4 @@
-package Models;
+package Models.Tuples;
 
 public class Vector extends Tuple {
 
@@ -32,7 +32,7 @@ public class Vector extends Tuple {
     }
 
     public double magnitude() {
-        return Math.sqrt(getX() * getX() + getY() * getY() + getZ() * getZ());
+        return (double) Math.sqrt(getX() * getX() + getY() * getY() + getZ() * getZ());
     }
 
     public Vector normalize() {

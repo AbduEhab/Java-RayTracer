@@ -5,11 +5,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 
-import Models.Color;
 import Models.Material;
-import Models.Point;
 import Models.PointLight;
-import Models.Vector;
+import Models.Tuples.Color;
+import Models.Tuples.Point;
+import Models.Tuples.Vector;
 
 public class MaterialTests {
 
@@ -35,12 +35,12 @@ public class MaterialTests {
         Vector eyev = new Vector(0, 0, -1);
         Vector normalv = new Vector(0, 0, -1);
         PointLight l = new PointLight(new Color(1, 1, 1), new Point(0, 0, -10));
-        Color res = new Color(1.9, 1.9, 1.9);
+        Color res = new Color(1.9f, 1.9f, 1.9f);
 
         assertEquals(true, m.lighting(l, p, eyev, normalv, false).equals(res), "Material lighting is not valid");
 
         p = new Point();
-        eyev = new Vector(0, Math.sqrt(2) / 2, -Math.sqrt(2) / 2);
+        eyev = new Vector(0, (float) Math.sqrt(2) / 2, (float) -Math.sqrt(2) / 2);
         normalv = new Vector(0, 0, -1);
         l = new PointLight(new Color(1, 1, 1), new Point(0, 0, -10));
         res = new Color(1, 1, 1);
@@ -51,15 +51,15 @@ public class MaterialTests {
         eyev = new Vector(0, 0, -1);
         normalv = new Vector(0, 0, -1);
         l = new PointLight(new Color(1, 1, 1), new Point(0, 10, -10));
-        res = new Color(0.7364, 0.7364, 0.7364);
+        res = new Color(0.7364f, 0.7364f, 0.7364f);
 
         assertEquals(true, m.lighting(l, p, eyev, normalv, false).equals(res), "Material lighting is not valid");
 
         p = new Point();
-        eyev = new Vector(0, -Math.sqrt(2) / 2, -Math.sqrt(2) / 2);
+        eyev = new Vector(0, (float) -Math.sqrt(2) / 2, (float) -Math.sqrt(2) / 2);
         normalv = new Vector(0, 0, -1);
         l = new PointLight(new Color(1, 1, 1), new Point(0, 10, -10));
-        res = new Color(1.6364, 1.6364, 1.6364);
+        res = new Color(1.6364f, 1.6364f, 1.6364f);
 
         assertEquals(true, m.lighting(l, p, eyev, normalv, false).equals(res), "Material lighting is not valid");
 
@@ -67,7 +67,7 @@ public class MaterialTests {
         eyev = new Vector(0, 0, -1);
         normalv = new Vector(0, 0, -1);
         l = new PointLight(new Color(1, 1, 1), new Point(0, 0, 10));
-        res = new Color(0.1, 0.1, 0.1);
+        res = new Color(0.1f, 0.1f, 0.1f);
 
         assertEquals(true, m.lighting(l, p, eyev, normalv, false).equals(res), "Material lighting is not valid");
     }
@@ -81,7 +81,7 @@ public class MaterialTests {
         Vector eyev = new Vector(0, 0, -1);
         Vector normalv = new Vector(0, 0, -1);
         PointLight l = new PointLight(new Color(1, 1, 1), new Point(0, 0, -10));
-        Color res = new Color(0.1, 0.1, 0.1);
+        Color res = new Color(0.1f, 0.1f, 0.1f);
 
         assertEquals(true, m.lighting(l, p, eyev, normalv, true).equals(res), "Material Shadow-lighting is not valid");
     }

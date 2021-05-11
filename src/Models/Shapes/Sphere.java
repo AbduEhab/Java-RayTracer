@@ -1,9 +1,15 @@
-package Models;
+package Models.Shapes;
 
 import java.util.ArrayList;
 
+import Models.Intersection;
+import Models.Ray;
+import Models.Tuples.Point;
+import Models.Tuples.Vector;
+
 public class Sphere extends Shape {
 
+    @Override
     public ArrayList<Intersection> intersects(Ray ray) {
         ray = ray.transform(getTransform().inverse());
 
@@ -27,6 +33,7 @@ public class Sphere extends Shape {
         return retVaues;
     }
 
+    @Override
     public Vector normalAt(Point p) {
         Point objectPoint = getTransform().inverse().multiply(p);
 
@@ -39,6 +46,7 @@ public class Sphere extends Shape {
         return worldNormal.normalize();
     }
 
+    @Override
     public boolean equals(Shape s) {
         if (!(s instanceof Sphere))
             return false;
@@ -48,10 +56,4 @@ public class Sphere extends Shape {
 
         return false;
     }
-
-    @Override
-    public String toString() {
-        return "Sphere: " + hashCode();
-    }
-
 }

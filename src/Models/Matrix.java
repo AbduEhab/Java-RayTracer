@@ -1,5 +1,8 @@
 package Models;
 
+import Models.Tuples.Point;
+import Models.Tuples.Vector;
+
 public class Matrix {
     private double[][] matrix;
     private int size;

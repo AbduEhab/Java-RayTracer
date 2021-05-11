@@ -2,6 +2,10 @@ package Models;
 
 import java.util.ArrayList;
 
+import Models.Shapes.Shape;
+import Models.Tuples.Point;
+import Models.Tuples.Vector;
+
 public class Intersection {
 
     private double t;

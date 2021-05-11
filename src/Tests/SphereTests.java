@@ -7,10 +7,10 @@ import org.junit.jupiter.api.DisplayName;
 
 import Models.Material;
 import Models.Matrix;
-import Models.Point;
 import Models.Ray;
-import Models.Sphere;
-import Models.Vector;
+import Models.Shapes.Sphere;
+import Models.Tuples.Point;
+import Models.Tuples.Vector;
 
 public class SphereTests {
 

@@ -1,5 +1,9 @@
 package Models;
 
+import Models.Tuples.Color;
+import Models.Tuples.Point;
+import Models.Tuples.Vector;
+
 public class Material {
 
     private Color color = new Color(1, 1, 1);;

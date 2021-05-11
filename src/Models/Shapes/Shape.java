@@ -1,6 +1,13 @@
-package Models;
+package Models.Shapes;
 
 import java.util.ArrayList;
+
+import Models.Intersection;
+import Models.Material;
+import Models.Matrix;
+import Models.Ray;
+import Models.Tuples.Point;
+import Models.Tuples.Vector;
 
 abstract public class Shape {
 
@@ -14,7 +21,9 @@ abstract public class Shape {
 
     abstract public boolean equals(Shape s);
 
-    abstract public String toString();
+    public String toString() {
+        return getClass().getSimpleName() + " " + hashCode();
+    }
 
     public Material getMaterial() {
         return material;

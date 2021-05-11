@@ -1,5 +1,9 @@
 package Models;
 
+import Models.Shapes.Shape;
+import Models.Tuples.Point;
+import Models.Tuples.Vector;
+
 public class Computation {
 
     private double t;

@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 
-import Models.Vector;
+import Models.Tuples.Vector;
 
 public class VectorTests {
 

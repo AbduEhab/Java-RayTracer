@@ -5,9 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 
-import Models.Color;
 import Models.PointLight;
-import Models.Point;
+import Models.Tuples.Color;
+import Models.Tuples.Point;
 
 public class LightsTests {
 

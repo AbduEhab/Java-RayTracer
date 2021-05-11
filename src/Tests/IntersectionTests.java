@@ -8,10 +8,10 @@ import org.junit.jupiter.api.DisplayName;
 import Models.Computation;
 import Models.Intersection;
 import Models.Matrix;
-import Models.Point;
 import Models.Ray;
-import Models.Sphere;
-import Models.Vector;
+import Models.Shapes.Sphere;
+import Models.Tuples.Point;
+import Models.Tuples.Vector;
 
 public class IntersectionTests {
 
@@ -19,7 +19,7 @@ public class IntersectionTests {
         @DisplayName("Intersection Hits")
         public void IntersectionHits() {
 
-                Sphere s = new Sphere();
+                Models.Shapes.Sphere s = new Sphere();
                 Intersection i1 = new Intersection(1, s);
                 Intersection i2 = new Intersection(2, s);
                 Intersection i3 = new Intersection(-1, s);
@@ -42,7 +42,7 @@ public class IntersectionTests {
 
                 Ray r = new Ray(new Point(0, 0, -5), new Vector(0, 0, 1));
 
-                Sphere s = new Sphere();
+                Models.Shapes.Sphere s = new Sphere();
                 s.setTransform(Matrix.IDENTITY.translate(0, 0, 1));
 
                 Intersection intersection = new Intersection(5, s);

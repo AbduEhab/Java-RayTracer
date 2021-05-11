@@ -1,5 +1,8 @@
 package Models;
 
+import Models.Tuples.Point;
+import Models.Tuples.Vector;
+
 public class Projectile {
     private Point position;
     private Vector velocity;

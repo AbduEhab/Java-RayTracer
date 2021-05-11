@@ -12,7 +12,7 @@ import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 
 import Models.Canvas;
-import Models.Color;
+import Models.Tuples.Color;
 
 public class CanvasTests {
 
