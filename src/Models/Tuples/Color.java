@@ -2,6 +2,16 @@ package Models.Tuples;
 
 public class Color extends Tuple {
 
+    public static final Color BLACK = new Color(0, 0, 0);
+    public static final Color WHITE = new Color(1, 1, 1);
+
+    public static final Color RED = new Color(1, 0, 0);
+    public static final Color GREEN = new Color(0, 1, 0);
+    public static final Color BLUE = new Color(0, 0, 1);
+
+    public static final Color PURPLE = new Color(1, 0, 1);
+    public static final Color YELLOW = new Color(1, 1, 0);
+
     public Color(double red, double green, double blue) {
 
         super(red > 255 ? 255 : red < 0 ? 0 : red, green > 255 ? 255 : green < 0 ? 0 : green,
