@@ -3,23 +3,21 @@ package Models.Patterns;
 import Models.Tuples.Color;
 import Models.Tuples.Point;
 
-public class Stripe extends Pattern {
+public class Checker extends Pattern {
 
-    public Stripe() {
+    public Checker() {
         super();
     }
 
-    public Stripe(Color[] colors) {
+    public Checker(Color[] colors) {
         super(colors);
     }
 
     public Color colorAt(Point p) {
 
-        if (Math.floor(p.getX()) % 2 == 0)
+        if ((Math.abs((int) p.getX()) + Math.abs((int) p.getY()) + Math.abs((int) p.getZ())) % 2 == 0)
             return getFirstColor();
         else
             return getSecondColor();
-
     }
-
 }

@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 
-import Models.PointLight;
+import Models.Lights.PointLight;
 import Models.Tuples.Color;
 import Models.Tuples.Point;
 

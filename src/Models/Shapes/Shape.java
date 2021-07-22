@@ -29,15 +29,17 @@ abstract public class Shape {
         return material;
     }
 
-    public void setMaterial(Material material) {
+    public Shape setMaterial(Material material) {
         this.material = material;
+        return this;
     }
 
     public Matrix getTransform() {
         return transform;
     }
 
-    public void setTransform(Matrix transform) {
+    public Shape setTransform(Matrix transform) {
         this.transform = transform;
+        return this;
     }
 }

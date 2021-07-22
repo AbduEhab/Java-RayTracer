@@ -3,6 +3,7 @@ package Models.Tuples;
 public class Color extends Tuple {
 
     public static final Color BLACK = new Color(0, 0, 0);
+    public static final Color DARK_GREY = new Color(0.2, 0.2, 0.2);
     public static final Color WHITE = new Color(1, 1, 1);
 
     public static final Color RED = new Color(1, 0, 0);
@@ -14,8 +15,11 @@ public class Color extends Tuple {
 
     public Color(double red, double green, double blue) {
 
-        super(red > 255 ? 255 : red < 0 ? 0 : red, green > 255 ? 255 : green < 0 ? 0 : green,
-                blue > 255 ? 255 : blue < 0 ? 0 : blue, 0);
+        // super(red > 255 ? 255 : red < 0 ? 0 : red, green > 255 ? 255 : green < 0 ? 0
+        // : green,
+        // blue > 255 ? 255 : blue < 0 ? 0 : blue, 0);
+
+        super(red > 255 ? 255 : red, green > 255 ? 255 : green, blue > 255 ? 255 : blue, 0);
     }
 
     public Color add(Tuple b) {

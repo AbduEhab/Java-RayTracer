@@ -1,30 +1,30 @@
-package Models;
+package Models.Lights;
 
 import Models.Tuples.Color;
 import Models.Tuples.Point;
 
-public class PointLight {
-
+abstract public class Light {
     private Color intensity;
     private Point position;
 
-    public PointLight() {
+    public Light() {
         intensity = new Color(255, 255, 255);
         position = new Point();
     }
 
-    public PointLight(Color intensity, Point position) {
+    public Light(Color intensity, Point position) {
         this.intensity = intensity;
         this.position = position;
     }
 
-    public boolean equals(PointLight p) {
-
-        return (intensity.equals(p.intensity)) && (position.equals(p.position));
-    }
+    abstract public boolean equals(Light p);
 
     public Color getIntensity() {
         return intensity;
+    }
+
+    public void setIntensity(Color intensity) {
+        this.intensity = intensity;
     }
 
     public Point getPosition() {
@@ -38,5 +38,4 @@ public class PointLight {
     public String toString() {
         return "[ Intensity: " + intensity + ", Position: " + position + " ]";
     }
-
 }

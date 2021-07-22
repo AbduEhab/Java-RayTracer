@@ -40,9 +40,9 @@ public class Canvas {
         return toPPM("./Renders/" + "ExampleRender.ppm");
     }
 
-    private boolean toPPM(String path) {
+    public boolean toPPM(String path) {
 
-        System.out.println("Outputing File of Resolution: [" + (height) + " x " + height + "]");
+        System.out.println("Outputing File of Resolution: [" + (width) + " x " + height + "]");
 
         String ppmStartString = "P3\n" + width + " " + height + "\n255\n";
 
@@ -71,13 +71,13 @@ public class Canvas {
                 toPPM("../Renders/" + "ExampleRender.ppm");
 
             } catch (IOException e1) {
-                System.out.println("An error while creating file.");
+                System.out.println("An unknown error occured while creating file.");
                 e1.printStackTrace();
             }
 
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("An error while writing file.");
+            System.out.println("An unknown error occured while writing file.");
             return false;
         }
 
