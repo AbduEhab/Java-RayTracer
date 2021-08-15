@@ -24,6 +24,14 @@ public class Color extends Tuple {
         return new Color(getX() * b.getX(), getY() * b.getY(), getZ() * b.getZ());
     }
 
+    public java.awt.Color toSTDColor() {
+        return new java.awt.Color(red(), green(), blue());
+    }
+
+    public int[] getColorArray() {
+        return new int[] { red(), green(), blue() };
+    }
+
     public int red() {
         return (int) getX();
     }

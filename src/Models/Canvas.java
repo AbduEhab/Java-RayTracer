@@ -1,8 +1,14 @@
 package Models;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
+import java.awt.image.BufferedImage;
+import java.awt.image.WritableRaster;
 
 import Models.Tuples.Color;
 
@@ -34,7 +40,7 @@ public class Canvas {
 
     public boolean toPPM() {
 
-        System.out.println("Outputing File of Resolution: [" + (height ) + " x " + height + "]");
+        System.out.println("Outputing File of Resolution: [" + (height) + " x " + height + "]");
 
         String ppmStartString = "P3\n" + width + " " + height + "\n255\n";
 
@@ -52,6 +58,7 @@ public class Canvas {
                 }
                 buffer.write("\n");
             }
+            buffer.flush();
             buffer.close();
 
         } catch (IOException e) {
@@ -62,6 +69,43 @@ public class Canvas {
 
         Long endTime = System.nanoTime();
         System.out.println("File Output done in: " + (endTime - startTime) / 1000000 + "ms");
+        return true;
+    }
+
+    public boolean toPNG() {
+
+        System.out.println("Outputing File of Resolution: [" + (height) + " x " + height + "]");
+
+        Long startTime = System.nanoTime();
+
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        WritableRaster raster = (WritableRaster) image.getData();
+
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+
+                raster.setPixel(j, i, pixel[j][i].getColorArray());
+            }
+        }
+
+        image.setData(raster);
+
+        try {
+
+            File f = new File("./Renders/" + "ExampleRender.png");
+
+            ImageIO.write(image, "png", f);
+
+        } catch (IOException e) {
+            System.out.println("An error while writing file.");
+            e.printStackTrace();
+        }
+
+        // System.out.println(raster.getpi);
+
+        Long endTime = System.nanoTime();
+        System.out.println("File Output done in: " + (endTime - startTime) / 1000000 + "ms");
+
         return true;
     }
 

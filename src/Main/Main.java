@@ -36,7 +36,7 @@ public class Main {
         Long endTime = System.nanoTime();
         System.out.println("Pixel Calculation done in: " + (endTime - startTime) / 1000000 + "ms");
 
-        c.toPPM();
+        c.toPNG();
 
         endTime = System.nanoTime();
         System.out.println("Rendering done in: " + (endTime - startTime) / 1000000 + "ms");
