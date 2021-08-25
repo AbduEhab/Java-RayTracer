@@ -13,6 +13,7 @@ public class World {
 
     private ArrayList<Shape> shapes = new ArrayList<Shape>();
     private ArrayList<Light> lights = new ArrayList<Light>();
+    private int recursionCalls = 7;
 
     public World() {
     }
@@ -44,22 +45,27 @@ public class World {
     }
 
     public Color shadeHit(Computation c) {
+        return shadeHitHelper(c, -1);
+    }
 
+    public Color shadeHitHelper(Computation c, int recursionLevel) {
         Color res = new Color(0, 0, 0);
         for (Light light : lights) {
 
             boolean inShadow = false;
 
-            if (c.getShape() instanceof Sphere) {
-                inShadow = isShadowed(c.getOverPoint().add(c.getShape().normalAt(c.getPoint())), light);
-            } else {
-                inShadow = isShadowed(c.getOverPoint(), light);
-            }
+            // if (c.getShape() instanceof Sphere) {
+            // inShadow =
+            // isShadowed(c.getOverPoint().add(c.getShape().normalAt(c.getPoint()).multiply(1.2)),
+            // light);
+            // } else {
+            inShadow = isShadowed(c.getOverPoint(), light);
+            // }
 
             res = res.add(c.getShape().getMaterial().lighting(light, c.getShape(), c.getPoint(), c.getEyeVector(),
                     c.getNormalVector(), inShadow));
 
-            res = res.add(reflectedColor(c));
+            res = res.add(reflectedColorHelper(c, recursionLevel));
         }
 
         return res;
@@ -72,11 +78,25 @@ public class World {
         Intersection hit = Intersection.hit(intrsections);
 
         if (hit == null)
-            return new Color(0, 0, 0);
+            return Color.BLACK;
 
         Computation c = hit.prepareComputate(ray);
 
-        return shadeHit(c);
+        return shadeHitHelper(c, -1);
+    }
+
+    public Color _colorAt(Ray ray, int recursionLevel) {
+
+        ArrayList<Intersection> intrsections = intersects(ray);
+
+        Intersection hit = Intersection.hit(intrsections);
+
+        if (hit == null)
+            return Color.BLACK;
+
+        Computation c = hit.prepareComputate(ray);
+
+        return shadeHitHelper(c, recursionLevel);
     }
 
     public boolean isShadowed(Point p, Light light) {
@@ -97,21 +117,34 @@ public class World {
             return false;
     }
 
-    static int recursionLevel = 0;
-
     public Color reflectedColor(Computation comp) {
 
-        if (comp.getShape().getMaterial().getReflectiveness() == 0 | recursionLevel++ > 7) {
+        return reflectedColorHelper(comp, 0);
+
+    }
+
+    public Color reflectedColorHelper(Computation comp, int recursionLevel) {
+
+        if (comp.getShape().getMaterial().getReflectiveness() == 0 | ++recursionLevel > recursionCalls) {
             recursionLevel = 0;
             return Color.BLACK;
         }
 
         Ray reflectedRay = new Ray(comp.getOverPoint(), comp.getReflectionVector());
 
-        Color c = colorAt(reflectedRay);
+        Color c = _colorAt(reflectedRay, recursionLevel);
 
         return c.multiply(comp.getShape().getMaterial().getReflectiveness());
+    }
 
+    public boolean setRecursionCalls(int r) {
+        if (r >= 0)
+            recursionCalls = r;
+        return true;
+    }
+
+    public int getRecursionCalls() {
+        return recursionCalls;
     }
 
     public void addShape(Shape s) {

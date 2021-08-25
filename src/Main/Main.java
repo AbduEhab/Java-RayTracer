@@ -36,7 +36,7 @@ public class Main {
         // var c = shadowWorld1();
 
         // var c = shadowWorld2();
-        
+
         // var c = patternWorld();
 
         var c = reflectiveWorld();
@@ -154,7 +154,7 @@ public class Main {
                     Vector normalVector = intersections.get(0).getShape().normalAt(hitPoint);
                     Vector eyeVector = ray.getDirection().multiply(-1);
 
-                    Color color = intersections.get(0).getShape().getMaterial().lighting(l, hitPoint, eyeVector,
+                    Color color = intersections.get(0).getShape().getMaterial().lighting(l, s, hitPoint, eyeVector,
                             normalVector, false);
 
                     c.writePixel(i, j, color);
@@ -272,22 +272,22 @@ public class Main {
     private static Canvas reflectiveWorld() { // program 8 --Chapter 11
 
         Shape floor = new XZPlane();
-        floor.getMaterial().setColor(new Color(1, 0.9, 0.9)).setSpecular(0).setReflectiveness(0.5);
+        floor.getMaterial().setColor(new Color(1, 0.9, 0.9)).setSpecular(0).setReflectiveness(0.3);
 
         Sphere middleSphere = new Sphere();
         middleSphere.setTransform(Matrix.IDENTITY.translate(-0.5, 1, 0.5));
         middleSphere.getMaterial().setColor(new Color(0.1, 1, 0.5)).setDiffuse(0.7).setSpecular(0.3)
-                .setReflectiveness(0.5);
+                .setReflectiveness(0.3);
 
         Sphere rightSphere = new Sphere();
         rightSphere.setTransform(Matrix.IDENTITY.translate(1.5, 0.5, -0.5).scale(0.5, 0.5, 0.5));
         rightSphere.getMaterial().setColor(new Color(0.5, 1, 0.1)).setDiffuse(0.7).setSpecular(0.3)
-                .setReflectiveness(0.5);
+                .setReflectiveness(0.3);
 
         Sphere leftSphere = new Sphere();
         leftSphere.setTransform(Matrix.IDENTITY.translate(-1.5, 0.33, -0.75).scale(0.33, 0.33, 0.33));
         leftSphere.getMaterial().setColor(new Color(1, 0.8, 0.1)).setDiffuse(0.7).setSpecular(0.3)
-                .setReflectiveness(0.5);
+                .setReflectiveness(0.3);
 
         World w = new World();
 
@@ -295,10 +295,14 @@ public class Main {
 
         w.addLight(new PointLight(new Color(255, 255, 255), new Point(-10, 10, -10)));
 
-        Camera c = new Camera(300, 300, Math.PI / 3);
+        Camera c = new Camera(160, 120, Math.PI / 3);
         c.transform(new Point(0, 1.5, -5), new Point(0, 1, 0), new Vector(0, 1, 0));
 
-        return c.renderMultiThread(w, -1);
+        w.setRecursionCalls(100);
+
+        // return c.render(w);
+
+       return c.renderMultiThread(w, -1);
     }
 
 }

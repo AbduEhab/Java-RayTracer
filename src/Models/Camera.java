@@ -91,8 +91,8 @@ public class Camera {
                 Runnable runnable = () -> {
                     for (int y = index; y < vSize; y += cores) {
 
-                        System.out.println(
-                                ">> Thread {" + index + "}: Calculating Row: [" + (y + 1) + '/' + c.getHeight() + ']');
+                        System.out.println(">> Thread {" + (index + 1) + "}: Calculating Row: [" + (y + 1) + '/'
+                                + c.getHeight() + ']');
 
                         for (int x = 0; x < hSize; x++) {
 
