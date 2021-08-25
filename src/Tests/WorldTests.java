@@ -3,6 +3,7 @@ package Tests;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
@@ -73,7 +74,7 @@ public class WorldTests {
 
         Intersection i = new Intersection(4, s);
 
-        Computation c = i.prepareComputate(r);
+        Computation c = i.prepareComputate(r, null);
 
         assertEquals(true, c.getNormalVector().equals(normalVector),
                 "World prepare Computation method is not implemented correctly");
@@ -96,7 +97,7 @@ public class WorldTests {
 
         Intersection i = new Intersection(4, s);
 
-        Computation c = i.prepareComputate(r);
+        Computation c = i.prepareComputate(r, null);
 
         Color color = w.shadeHit(c);
 
@@ -119,7 +120,7 @@ public class WorldTests {
 
         Intersection i = new Intersection(0.5f, s);
 
-        Computation c = i.prepareComputate(r);
+        Computation c = i.prepareComputate(r, null);
 
         Color color = w.shadeHit(c);
 
@@ -168,7 +169,7 @@ public class WorldTests {
         Ray r = new Ray(new Point(0, 0, 5), new Vector(0, 0, 1));
         Intersection intersection = new Intersection(4, s2);
 
-        Computation comp = intersection.prepareComputate(r);
+        Computation comp = intersection.prepareComputate(r, null);
 
         Color result = w.shadeHit(comp);
 
@@ -191,7 +192,7 @@ public class WorldTests {
 
         Intersection i = new Intersection(1, s);
 
-        Computation comp = i.prepareComputate(r);
+        Computation comp = i.prepareComputate(r, new ArrayList<Intersection>(Arrays.asList(new Intersection[] { i })));
 
         Color c = w.reflectedColor(comp);
 
@@ -216,7 +217,7 @@ public class WorldTests {
 
         Intersection i = new Intersection(Math.sqrt(2), s);
 
-        Computation comp = i.prepareComputate(r);
+        Computation comp = i.prepareComputate(r, new ArrayList<Intersection>(Arrays.asList(new Intersection[] { i })));
 
         Color c = w.reflectedColor(comp);
 
@@ -244,7 +245,7 @@ public class WorldTests {
 
         Intersection i = new Intersection(Math.sqrt(2), s);
 
-        Computation comp = i.prepareComputate(r);
+        Computation comp = i.prepareComputate(r, new ArrayList<Intersection>(Arrays.asList(new Intersection[] { i })));
 
         Color c = w.shadeHit(comp);
 
@@ -278,4 +279,22 @@ public class WorldTests {
         assertEquals(true, true, "Reflected Color Method is not implemented correctly");
     }
 
+    @Test
+    @DisplayName("Reflected Color Method extended testing")
+    public void shadeHitRefractedColor() {
+
+        World w = World.defaultWorld();
+
+        Shape s = w.getShapes().get(0);
+
+        Ray r = new Ray(new Point(0, 0, -5), new Vector(0, 0, 1));
+
+        Intersection[] xs = new Intersection[] { new Intersection(4, s), new Intersection(6, s) };
+
+        Computation comp = xs[0].prepareComputate(r, new ArrayList<Intersection>(Arrays.asList(xs)));
+
+        Color c = w.refractedColor(comp);
+
+        assertEquals(true, c.equals(Color.BLACK), "Reflected Color Method is not implemented correctly");
+    }
 }

@@ -20,7 +20,7 @@ public class World {
 
     private World(Object o) {
         Sphere sphere = new Sphere();
-        sphere.setMaterial(new Material(new Color(0.8, 1, 0.6), -1, 0.7, 0.2, -1, null, 0));
+        sphere.setMaterial(new Material(new Color(0.8, 1, 0.6), -1, 0.7, 0.2, -1, null, 0, -1, -1));
         shapes.add(sphere);
         Sphere sphere2 = new Sphere();
         sphere2.setTransform(Matrix.IDENTITY.scale(0.5, 0.5, 0.5));
@@ -80,7 +80,7 @@ public class World {
         if (hit == null)
             return Color.BLACK;
 
-        Computation c = hit.prepareComputate(ray);
+        Computation c = hit.prepareComputate(ray, intrsections);
 
         return shadeHitHelper(c, -1);
     }
@@ -94,7 +94,7 @@ public class World {
         if (hit == null)
             return Color.BLACK;
 
-        Computation c = hit.prepareComputate(ray);
+        Computation c = hit.prepareComputate(ray, intrsections);
 
         return shadeHitHelper(c, recursionLevel);
     }
@@ -135,6 +135,20 @@ public class World {
         Color c = _colorAt(reflectedRay, recursionLevel);
 
         return c.multiply(comp.getShape().getMaterial().getReflectiveness());
+    }
+
+    public Color refractedColor(Computation comp) {
+        return refractedColorHelper(comp, 0);
+    }
+
+    public Color refractedColorHelper(Computation comp, int recursionLevel) {
+
+        if (comp.getShape().getMaterial().getRefractiveIndex() == 0 | ++recursionLevel > recursionCalls) {
+            recursionLevel = 0;
+            return Color.BLACK;
+        }
+
+        return Color.WHITE;
     }
 
     public boolean setRecursionCalls(int r) {

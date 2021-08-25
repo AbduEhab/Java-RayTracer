@@ -16,6 +16,8 @@ public class Material {
     private double specular = 0.9;;
     private double shininess = 200;
     private double reflectiveness = 0;
+    private double transparency = 0;
+    private double refractiveIndex = 1;
 
     public Material() {
         color = new Color(1, 1, 1);
@@ -31,7 +33,7 @@ public class Material {
     }
 
     public Material(Color color, double ambient, double diffuse, double specular, double shininess, Pattern pattern,
-            double reflectiveness) {
+            double reflectiveness, double transparency, double refractiveIndex) {
         if (color != null)
             this.color = color;
         if (ambient >= 0)
@@ -42,9 +44,14 @@ public class Material {
             this.specular = specular;
         if (shininess >= 0)
             this.shininess = shininess;
+
         this.pattern = pattern;
 
-        this.reflectiveness = reflectiveness > 1 ? 1 : reflectiveness < 0 ? 0 : 0;
+        this.reflectiveness = reflectiveness > 1 ? 1 : reflectiveness < 0 ? 0 : reflectiveness;
+
+        this.transparency = transparency >= 0 ? transparency : 0;
+
+        this.refractiveIndex = refractiveIndex >= 0 ? refractiveIndex : 0;
     }
 
     public Color lighting(Light light, Shape shape, Point point, Vector eyevVector, Vector normalVector,
@@ -95,7 +102,8 @@ public class Material {
     }
 
     public Material setColor(Color color) {
-        this.color = color;
+        if (color != null)
+            this.color = color;
         return this;
     }
 
@@ -104,7 +112,8 @@ public class Material {
     }
 
     public Material setAmbient(double ambient) {
-        this.ambient = ambient;
+        if (ambient >= 0)
+            this.ambient = ambient;
         return this;
     }
 
@@ -113,7 +122,9 @@ public class Material {
     }
 
     public Material setDiffuse(double diffuse) {
-        this.diffuse = diffuse;
+        if (diffuse >= 0)
+            this.diffuse = diffuse;
+
         return this;
     }
 
@@ -122,7 +133,8 @@ public class Material {
     }
 
     public Material setShininess(double shininess) {
-        this.shininess = shininess;
+        if (shininess >= 0)
+            this.shininess = shininess;
         return this;
     }
 
@@ -131,7 +143,8 @@ public class Material {
     }
 
     public Material setSpecular(double specular) {
-        this.specular = specular;
+        if (specular >= 0)
+            this.specular = specular;
         return this;
     }
 
@@ -149,7 +162,29 @@ public class Material {
     }
 
     public Material setReflectiveness(double reflectiveness) {
-        this.reflectiveness = reflectiveness;
+        this.reflectiveness = reflectiveness > 1 ? 1 : reflectiveness < 0 ? 0 : reflectiveness;
         return this;
     }
+
+    public double getTransparency() {
+        return transparency;
+    }
+
+    public Material setTransparency(double transparency) {
+        if (transparency >= 0)
+            this.transparency = transparency;
+        return this;
+    }
+
+    public double getRefractiveIndex() {
+        return refractiveIndex;
+    }
+
+    public Material setRefractiveIndex(double refractiveIndex) {
+        if (refractiveIndex >= 0)
+            this.refractiveIndex = refractiveIndex;
+
+        return this;
+    }
+
 }
