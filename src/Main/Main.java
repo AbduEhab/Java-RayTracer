@@ -6,13 +6,17 @@ import Models.Tuples.Color;
 import Models.Enviroment;
 import Models.Material;
 import Models.Matrix;
-import Models.PointLight;
 import Models.Projectile;
 import Models.Ray;
 import Models.Shapes.XZPlane;
 import Models.Shapes.Shape;
 import Models.Shapes.Sphere;
 import Models.World;
+import Models.Lights.PointLight;
+import Models.Patterns.Checker;
+import Models.Patterns.Gradient;
+import Models.Patterns.Ring;
+import Models.Patterns.Stripe;
 import Models.Tuples.Point;
 import Models.Tuples.Vector;
 
@@ -29,9 +33,13 @@ public class Main {
 
         // var c = sphere(300);
 
-        // var c = testWorld1();
+        // var c = shadowWorld1();
 
-        var c = testWorld2();
+        // var c = shadowWorld2();
+
+        // var c = patternWorld();
+
+        var c = reflectiveWorld();
 
         Long endTime = System.nanoTime();
         System.out.println("Pixel Calculation done in: " + (endTime - startTime) / 1000000 + "ms");
@@ -146,7 +154,7 @@ public class Main {
                     Vector normalVector = intersections.get(0).getShape().normalAt(hitPoint);
                     Vector eyeVector = ray.getDirection().multiply(-1);
 
-                    Color color = intersections.get(0).getShape().getMaterial().lighting(l, hitPoint, eyeVector,
+                    Color color = intersections.get(0).getShape().getMaterial().lighting(l, s, hitPoint, eyeVector,
                             normalVector, false);
 
                     c.writePixel(i, j, color);
@@ -157,7 +165,7 @@ public class Main {
         return c;
     }
 
-    private static Canvas testWorld1() { // program 5 --Chapter 7-8
+    private static Canvas shadowWorld1() { // program 5 --Chapter 7-8
 
         Sphere floor = new Sphere();
         floor.setTransform(Matrix.IDENTITY.scale(10, 0.01, 10));
@@ -197,7 +205,7 @@ public class Main {
         return c.renderMultiThread(w, -1);
     }
 
-    private static Canvas testWorld2() { // program 5 --Chapter 7-8
+    private static Canvas shadowWorld2() { // program 6 --Chapter 9
 
         Shape floor = new XZPlane();
         floor.getMaterial().setColor(new Color(1, 0.9, 0.9)).setSpecular(0);
@@ -224,6 +232,77 @@ public class Main {
         c.transform(new Point(0, 1.5, -5), new Point(0, 1, 0), new Vector(0, 1, 0));
 
         return c.renderMultiThread(w, -1);
+    }
+
+    private static Canvas patternWorld() { // program 7 --Chapter 10
+
+        Shape floor = new XZPlane();
+        floor.getMaterial().setColor(new Color(1, 0.9, 0.9)).setSpecular(0)
+                .setPattern(new Checker(new Color[] { Color.WHITE, Color.BLACK }));
+
+        Sphere middleSphere = new Sphere();
+        middleSphere.setTransform(Matrix.IDENTITY.translate(-0.5, 1, 0.5));
+        middleSphere.getMaterial().setColor(new Color(0.1, 1, 0.5)).setDiffuse(0.7).setSpecular(0.3)
+                .setPattern(new Gradient(new Color[] { Color.BLUE, Color.PURPLE })
+                        .setTransform(Matrix.IDENTITY.scale(2, 2, 2).translate(0.5, 0.5, 0.5)));
+
+        Sphere rightSphere = new Sphere();
+        rightSphere.setTransform(Matrix.IDENTITY.translate(1.5, 0.5, -0.5).scale(0.5, 0.5, 0.5));
+        rightSphere.getMaterial().setColor(new Color(0.5, 1, 0.1)).setDiffuse(0.7).setSpecular(0.3)
+                .setPattern(new Ring(new Color[] { Color.RED, Color.WHITE })
+                        .setTransform(Matrix.IDENTITY.scale(0.15, 0.15, 0.15).rotateZ(1)));
+
+        Sphere leftSphere = new Sphere();
+        leftSphere.setTransform(Matrix.IDENTITY.translate(-1.5, 0.33, -0.75).scale(0.33, 0.33, 0.33));
+        leftSphere.getMaterial().setColor(new Color(1, 0.8, 0.1)).setDiffuse(0.7).setSpecular(0.3)
+                .setPattern(new Stripe(new Color[] { Color.GREEN, Color.DARK_GREY }));
+
+        World w = new World();
+
+        w.addShape(new Shape[] { floor, leftSphere, rightSphere, middleSphere });
+
+        w.addLight(new PointLight(new Color(255, 255, 255), new Point(-10, 10, -10)));
+
+        Camera c = new Camera(200, 120, Math.PI / 3);
+        c.transform(new Point(0, 1.5, -5), new Point(0, 1, 0), new Vector(0, 1, 0));
+
+        return c.renderMultiThread(w, -1);
+    }
+
+    private static Canvas reflectiveWorld() { // program 8 --Chapter 11
+
+        Shape floor = new XZPlane();
+        floor.getMaterial().setColor(new Color(1, 0.9, 0.9)).setSpecular(0).setReflectiveness(0.3);
+
+        Sphere middleSphere = new Sphere();
+        middleSphere.setTransform(Matrix.IDENTITY.translate(-0.5, 1, 0.5));
+        middleSphere.getMaterial().setColor(new Color(0.1, 1, 0.5)).setDiffuse(0.7).setSpecular(0.3)
+                .setReflectiveness(0.3);
+
+        Sphere rightSphere = new Sphere();
+        rightSphere.setTransform(Matrix.IDENTITY.translate(1.5, 0.5, -0.5).scale(0.5, 0.5, 0.5));
+        rightSphere.getMaterial().setColor(new Color(0.5, 1, 0.1)).setDiffuse(0.7).setSpecular(0.3)
+                .setReflectiveness(0.3);
+
+        Sphere leftSphere = new Sphere();
+        leftSphere.setTransform(Matrix.IDENTITY.translate(-1.5, 0.33, -0.75).scale(0.33, 0.33, 0.33));
+        leftSphere.getMaterial().setColor(new Color(1, 0.8, 0.1)).setDiffuse(0.7).setSpecular(0.3)
+                .setReflectiveness(0.3);
+
+        World w = new World();
+
+        w.addShape(new Shape[] { floor, leftSphere, rightSphere, middleSphere });
+
+        w.addLight(new PointLight(new Color(255, 255, 255), new Point(-10, 10, -10)));
+
+        Camera c = new Camera(160, 120, Math.PI / 3);
+        c.transform(new Point(0, 1.5, -5), new Point(0, 1, 0), new Vector(0, 1, 0));
+
+        w.setRecursionCalls(100);
+
+        // return c.render(w);
+
+       return c.renderMultiThread(w, -1);
     }
 
 }

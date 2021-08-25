@@ -84,6 +84,7 @@ public class Intersection {
         Point p = ray.position(t);
         Vector eyeVector = ray.getDirection().multiply(-1);
         Vector normalVector = s.normalAt(p);
+        Vector reflectionVector = ray.getDirection().reflect(normalVector);
 
         boolean inside = false;
 
@@ -94,7 +95,7 @@ public class Intersection {
 
         Point overPoint = p.add(normalVector.multiply(0.00001));
 
-        return new Computation(t2, s, p, eyeVector, normalVector, inside, overPoint);
+        return new Computation(t2, s, p, eyeVector, normalVector, inside, overPoint, reflectionVector);
 
     }
 

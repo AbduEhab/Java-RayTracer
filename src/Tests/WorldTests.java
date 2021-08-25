@@ -6,18 +6,20 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Timeout;
 
 import Models.Computation;
 import Models.Intersection;
 import Models.Matrix;
-import Models.PointLight;
 import Models.Ray;
 import Models.Shapes.Shape;
 import Models.Shapes.Sphere;
+import Models.Shapes.XZPlane;
 import Models.Tuples.Color;
 import Models.Tuples.Point;
 import Models.Tuples.Vector;
 import Models.World;
+import Models.Lights.PointLight;
 
 public class WorldTests {
 
@@ -173,6 +175,107 @@ public class WorldTests {
         Color expected = new Color(0.1f, 0.1f, 0.1f);
 
         assertEquals(true, result.equals(expected), "World Shade Hit in Shadow method is not implemented correctly");
+    }
+
+    @Test
+    @DisplayName("Reflected Color Method")
+    public void reflectedColor() {
+
+        World w = World.defaultWorld();
+
+        Ray r = new Ray(new Point(0, 0, 0), new Vector(0, 0, 1));
+
+        Shape s = w.getShapes().get(1);
+
+        s.getMaterial().setAmbient(1);
+
+        Intersection i = new Intersection(1, s);
+
+        Computation comp = i.prepareComputate(r);
+
+        Color c = w.reflectedColor(comp);
+
+        assertEquals(true, c.equals(Color.BLACK), "Reflected Color Method is not implemented correctly");
+    }
+
+    @Test
+    @DisplayName("Reflected Color Method further testing")
+    public void reflectedColor2() {
+
+        World w = World.defaultWorld();
+
+        Shape s = new XZPlane();
+
+        s.getMaterial().setReflectiveness(0.5);
+
+        s.setTransform(Matrix.IDENTITY.translate(0, -1, 0));
+
+        w.addShape(s);
+
+        Ray r = new Ray(new Point(0, 0, -3), new Vector(0, -Math.sqrt(2) / 2, Math.sqrt(2) / 2));
+
+        Intersection i = new Intersection(Math.sqrt(2), s);
+
+        Computation comp = i.prepareComputate(r);
+
+        Color c = w.reflectedColor(comp);
+
+        System.out.println(c);
+
+        assertEquals(true, c.equals(new Color(0.19033, 0.23791, 0.14274)),
+                "Reflected Color Method is not implemented correctly");
+    }
+
+    @Test
+    @DisplayName("Reflected Color Method extended testing")
+    public void shadeHitReflectedColor() {
+
+        World w = World.defaultWorld();
+
+        Shape s = new XZPlane();
+
+        s.getMaterial().setReflectiveness(0.5);
+
+        s.setTransform(Matrix.IDENTITY.translate(0, -1, 0));
+
+        w.addShape(s);
+
+        Ray r = new Ray(new Point(0, 0, -3), new Vector(0, -Math.sqrt(2) / 2, Math.sqrt(2) / 2));
+
+        Intersection i = new Intersection(Math.sqrt(2), s);
+
+        Computation comp = i.prepareComputate(r);
+
+        Color c = w.shadeHit(comp);
+
+        assertEquals(true, c.equals(new Color(0.87675, 0.92434, 0.82917)),
+                "Reflected Color Method is not implemented correctly");
+    }
+
+    @Timeout(1000)
+    @Test
+    @DisplayName("Reflected Color Method further extended testing")
+    public void infiniteRecursionTest() {
+
+        World w = new World();
+
+        w.addLight(new PointLight(Color.WHITE, new Point()));
+
+        Shape s = new XZPlane();
+        s.setTransform(Matrix.IDENTITY.translate(0, -1, 0)).getMaterial().setReflectiveness(1);
+
+        w.addShape(s);
+
+        Shape s2 = new XZPlane();
+        s2.setTransform(Matrix.IDENTITY.translate(0, 1, 0)).getMaterial().setReflectiveness(1);
+
+        w.addShape(s2);
+
+        Ray r = new Ray(new Point(), new Vector(0, 1, 0));
+
+        w.colorAt(r);
+
+        assertEquals(true, true, "Reflected Color Method is not implemented correctly");
     }
 
 }

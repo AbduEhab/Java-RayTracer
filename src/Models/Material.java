@@ -1,5 +1,8 @@
 package Models;
 
+import Models.Lights.Light;
+import Models.Patterns.Pattern;
+import Models.Shapes.Shape;
 import Models.Tuples.Color;
 import Models.Tuples.Point;
 import Models.Tuples.Vector;
@@ -7,10 +10,12 @@ import Models.Tuples.Vector;
 public class Material {
 
     private Color color = new Color(1, 1, 1);;
+    private Pattern pattern;
     private double ambient = 0.1;;
     private double diffuse = 0.9;
     private double specular = 0.9;;
     private double shininess = 200;
+    private double reflectiveness = 0;
 
     public Material() {
         color = new Color(1, 1, 1);
@@ -25,7 +30,8 @@ public class Material {
                 + ", Shininess: " + shininess + " ]";
     }
 
-    public Material(Color color, double ambient, double diffuse, double specular, double shininess) {
+    public Material(Color color, double ambient, double diffuse, double specular, double shininess, Pattern pattern,
+            double reflectiveness) {
         if (color != null)
             this.color = color;
         if (ambient >= 0)
@@ -36,11 +42,20 @@ public class Material {
             this.specular = specular;
         if (shininess >= 0)
             this.shininess = shininess;
+        this.pattern = pattern;
+
+        this.reflectiveness = reflectiveness > 1 ? 1 : reflectiveness < 0 ? 0 : 0;
     }
 
-    public Color lighting(PointLight light, Point point, Vector eyevVector, Vector normalVector, boolean inShadow) {
+    public Color lighting(Light light, Shape shape, Point point, Vector eyevVector, Vector normalVector,
+            boolean inShadow) {
 
-        Color effColor = color.multiply(light.getIntensity());
+        Color effColor = null;
+        if (pattern != null) {
+            effColor = pattern.colorAt(shape, point).multiply(light.getIntensity());
+
+        } else
+            effColor = color.multiply(light.getIntensity());
 
         Vector lightVector = light.getPosition().subtract(point).normalize();
 
@@ -120,4 +135,21 @@ public class Material {
         return this;
     }
 
+    public Pattern getPattern() {
+        return pattern;
+    }
+
+    public Material setPattern(Pattern pattern) {
+        this.pattern = pattern;
+        return this;
+    }
+
+    public double getReflectiveness() {
+        return reflectiveness;
+    }
+
+    public Material setReflectiveness(double reflectiveness) {
+        this.reflectiveness = reflectiveness;
+        return this;
+    }
 }

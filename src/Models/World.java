@@ -2,6 +2,7 @@ package Models;
 
 import java.util.ArrayList;
 
+import Models.Lights.*;
 import Models.Shapes.Shape;
 import Models.Shapes.Sphere;
 import Models.Tuples.Color;
@@ -11,14 +12,15 @@ import Models.Tuples.Vector;
 public class World {
 
     private ArrayList<Shape> shapes = new ArrayList<Shape>();
-    private ArrayList<PointLight> lights = new ArrayList<PointLight>();
+    private ArrayList<Light> lights = new ArrayList<Light>();
+    private int recursionCalls = 7;
 
     public World() {
     }
 
     private World(Object o) {
         Sphere sphere = new Sphere();
-        sphere.setMaterial(new Material(new Color(0.8, 1, 0.6), -1, 0.7, 0.2, -1));
+        sphere.setMaterial(new Material(new Color(0.8, 1, 0.6), -1, 0.7, 0.2, -1, null, 0));
         shapes.add(sphere);
         Sphere sphere2 = new Sphere();
         sphere2.setTransform(Matrix.IDENTITY.scale(0.5, 0.5, 0.5));
@@ -43,14 +45,27 @@ public class World {
     }
 
     public Color shadeHit(Computation c) {
+        return shadeHitHelper(c, -1);
+    }
 
+    public Color shadeHitHelper(Computation c, int recursionLevel) {
         Color res = new Color(0, 0, 0);
-        for (PointLight pointLight : lights) {
+        for (Light light : lights) {
 
-            boolean inShadow = isShadowed(c.getOverPoint(), pointLight);
+            boolean inShadow = false;
 
-            res = res.add(c.getShape().getMaterial().lighting(pointLight, c.getPoint(), c.getEyeVector(),
+            // if (c.getShape() instanceof Sphere) {
+            // inShadow =
+            // isShadowed(c.getOverPoint().add(c.getShape().normalAt(c.getPoint()).multiply(1.2)),
+            // light);
+            // } else {
+            inShadow = isShadowed(c.getOverPoint(), light);
+            // }
+
+            res = res.add(c.getShape().getMaterial().lighting(light, c.getShape(), c.getPoint(), c.getEyeVector(),
                     c.getNormalVector(), inShadow));
+
+            res = res.add(reflectedColorHelper(c, recursionLevel));
         }
 
         return res;
@@ -63,14 +78,28 @@ public class World {
         Intersection hit = Intersection.hit(intrsections);
 
         if (hit == null)
-            return new Color(0, 0, 0);
+            return Color.BLACK;
 
         Computation c = hit.prepareComputate(ray);
 
-        return shadeHit(c);
+        return shadeHitHelper(c, -1);
     }
 
-    public boolean isShadowed(Point p, PointLight light) {
+    public Color _colorAt(Ray ray, int recursionLevel) {
+
+        ArrayList<Intersection> intrsections = intersects(ray);
+
+        Intersection hit = Intersection.hit(intrsections);
+
+        if (hit == null)
+            return Color.BLACK;
+
+        Computation c = hit.prepareComputate(ray);
+
+        return shadeHitHelper(c, recursionLevel);
+    }
+
+    public boolean isShadowed(Point p, Light light) {
 
         Vector v = light.getPosition().subtract(p);
 
@@ -82,11 +111,40 @@ public class World {
 
         Intersection hit = Intersection.hit(intersection);
 
-        if (hit != null && hit.getT() < distance) {
+        if (hit != null && hit.getT() < distance)
             return true;
-        } else {
+        else
             return false;
+    }
+
+    public Color reflectedColor(Computation comp) {
+
+        return reflectedColorHelper(comp, 0);
+
+    }
+
+    public Color reflectedColorHelper(Computation comp, int recursionLevel) {
+
+        if (comp.getShape().getMaterial().getReflectiveness() == 0 | ++recursionLevel > recursionCalls) {
+            recursionLevel = 0;
+            return Color.BLACK;
         }
+
+        Ray reflectedRay = new Ray(comp.getOverPoint(), comp.getReflectionVector());
+
+        Color c = _colorAt(reflectedRay, recursionLevel);
+
+        return c.multiply(comp.getShape().getMaterial().getReflectiveness());
+    }
+
+    public boolean setRecursionCalls(int r) {
+        if (r >= 0)
+            recursionCalls = r;
+        return true;
+    }
+
+    public int getRecursionCalls() {
+        return recursionCalls;
     }
 
     public void addShape(Shape s) {
@@ -101,14 +159,14 @@ public class World {
 
     }
 
-    public void addLight(PointLight l) {
+    public void addLight(Light l) {
         lights.add(l);
     }
 
-    public void addLight(PointLight[] l) {
+    public void addLight(Light[] l) {
 
-        for (PointLight pointLight : lights) {
-            lights.add(pointLight);
+        for (Light Light : lights) {
+            lights.add(Light);
         }
 
     }
@@ -121,11 +179,11 @@ public class World {
         this.shapes = shapes;
     }
 
-    public ArrayList<PointLight> getLights() {
+    public ArrayList<Light> getLights() {
         return lights;
     }
 
-    public void setLights(ArrayList<PointLight> lights) {
+    public void setLights(ArrayList<Light> lights) {
         this.lights = lights;
     }
 

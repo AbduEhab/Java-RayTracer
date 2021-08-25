@@ -23,8 +23,8 @@ public class CameraTests {
         Camera c = new Camera(160, 120, Math.PI / 2);
 
         assertEquals(Math.PI / 2, c.getFov(), "Camera Constructor is not implemented correctly");
-        assertEquals(120, c.gethSize(), "Camera Constructor is not implemented correctly");
-        assertEquals(160, c.getvSize(), "Camera Constructor is not implemented correctly");
+        assertEquals(160, c.gethSize(), "Camera Constructor is not implemented correctly");
+        assertEquals(120, c.getvSize(), "Camera Constructor is not implemented correctly");
         assertEquals(true, c.getTransform().equals(Matrix.IDENTITY), "Camera Constructor is not implemented correctly");
     }
 

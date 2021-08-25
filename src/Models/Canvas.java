@@ -4,6 +4,9 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import javax.imageio.ImageIO;
 
@@ -39,15 +42,20 @@ public class Canvas {
     }
 
     public boolean toPPM() {
+        return toPPM("./Renders/" + "ExampleRender.ppm");
+    }
 
-        System.out.println("Outputing File of Resolution: [" + (height) + " x " + height + "]");
+    public boolean toPPM(String path) {
+
+        System.out.println("Outputing File of Resolution: [" + (width) + " x " + height + "]");
 
         String ppmStartString = "P3\n" + width + " " + height + "\n255\n";
 
         Long startTime = System.nanoTime();
 
         try {
-            BufferedWriter buffer = new BufferedWriter(new FileWriter("./Renders/" + "ExampleRender.ppm"));
+
+            BufferedWriter buffer = new BufferedWriter(new FileWriter(path));
 
             buffer.write(ppmStartString);
 
@@ -61,15 +69,28 @@ public class Canvas {
             buffer.flush();
             buffer.close();
 
+        } catch (FileNotFoundException e) {
+
+            try {
+                Path renderPath = Paths.get("../Renders/");
+                Files.createDirectories(renderPath);
+                toPPM("../Renders/" + "ExampleRender.ppm");
+
+            } catch (IOException e1) {
+                System.out.println("An unknown error occured while creating file.");
+                e1.printStackTrace();
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("An error while writing file.");
+            System.out.println("An unknown error occured while writing file.");
             return false;
         }
 
         Long endTime = System.nanoTime();
         System.out.println("File Output done in: " + (endTime - startTime) / 1000000 + "ms");
         return true;
+
     }
 
     public boolean toPNG() {

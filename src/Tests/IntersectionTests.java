@@ -10,6 +10,7 @@ import Models.Intersection;
 import Models.Matrix;
 import Models.Ray;
 import Models.Shapes.Sphere;
+import Models.Shapes.XZPlane;
 import Models.Tuples.Point;
 import Models.Tuples.Vector;
 
@@ -42,7 +43,7 @@ public class IntersectionTests {
 
                 Ray r = new Ray(new Point(0, 0, -5), new Vector(0, 0, 1));
 
-                Models.Shapes.Sphere s = new Sphere();
+                Sphere s = new Sphere();
                 s.setTransform(Matrix.IDENTITY.translate(0, 0, 1));
 
                 Intersection intersection = new Intersection(5, s);
@@ -55,6 +56,22 @@ public class IntersectionTests {
                 assertEquals(true, comp.getPoint().getZ() > comp.getOverPoint().getZ(),
                                 "Intersection hit-offset is not implemented correctly");
 
+        }
+
+        @Test
+        @DisplayName("Testing reflection Computation")
+        public void reflectionComputation() {
+
+                Ray r = new Ray(new Point(0, 1, -1), new Vector(0, -Math.sqrt(2) / 2, Math.sqrt(2) / 2));
+
+                XZPlane s = new XZPlane();
+
+                Intersection intersection = new Intersection(Math.sqrt(2), s);
+
+                Computation comp = intersection.prepareComputate(r);
+
+                assertEquals(true, comp.getReflectionVector().equals(new Vector(0, Math.sqrt(2) / 2, Math.sqrt(2) / 2)),
+                                "Intersection reflection Vector is not computed correctly");
         }
 
 }
