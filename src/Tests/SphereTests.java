@@ -153,4 +153,11 @@ public class SphereTests {
                 "Sphere normalAt method is not implemented correctly");
 
     }
+
+    @Test
+    @DisplayName("Testing for Default Glass Sphere transparency")
+    public void glassSphere() {
+        assertEquals(1, Sphere.glassSphere().getMaterial().getTransparency(), "Material trasparancy is not valid");
+        assertEquals(1.5, Sphere.glassSphere().getMaterial().getRefractiveIndex(), "Material trasparancy is not valid");
+    }
 }

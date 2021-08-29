@@ -39,7 +39,9 @@ public class Main {
 
         // var c = patternWorld();
 
-        var c = reflectiveWorld();
+        // var c = reflectiveWorld();
+
+        var c = refractiveWorld();
 
         Long endTime = System.nanoTime();
         System.out.println("Pixel Calculation done in: " + (endTime - startTime) / 1000000 + "ms");
@@ -167,6 +169,11 @@ public class Main {
 
     private static Canvas shadowWorld1() { // program 5 --Chapter 7-8
 
+        // Note(AbduEhab): Something is wrong with the rendering function that breaks my
+        // CPU's interrupt routines. Don't know what is happening but this isn't a
+        // problem
+        // if you render small images so I wont pay attention to it atm.
+
         Sphere floor = new Sphere();
         floor.setTransform(Matrix.IDENTITY.scale(10, 0.01, 10));
         floor.getMaterial().setColor(new Color(1, 0.9, 0.9)).setSpecular(0);
@@ -199,7 +206,7 @@ public class Main {
 
         w.addLight(new PointLight(new Color(255, 255, 255), new Point(-10, 10, -10)));
 
-        Camera c = new Camera(200, 120, Math.PI / 3);
+        Camera c = new Camera(200, 160, Math.PI / 3);
         c.transform(new Point(0, 1.5, -5), new Point(0, 1, 0), new Vector(0, 1, 0));
 
         return c.renderMultiThread(w, -1);
@@ -228,7 +235,7 @@ public class Main {
 
         w.addLight(new PointLight(new Color(255, 255, 255), new Point(-10, 10, -10)));
 
-        Camera c = new Camera(200, 120, Math.PI / 3);
+        Camera c = new Camera(160, 120, Math.PI / 3);
         c.transform(new Point(0, 1.5, -5), new Point(0, 1, 0), new Vector(0, 1, 0));
 
         return c.renderMultiThread(w, -1);
@@ -263,7 +270,8 @@ public class Main {
 
         w.addLight(new PointLight(new Color(255, 255, 255), new Point(-10, 10, -10)));
 
-        Camera c = new Camera(200, 120, Math.PI / 3);
+        Camera c = new Camera(200, 160, Math.PI / 2.8);
+
         c.transform(new Point(0, 1.5, -5), new Point(0, 1, 0), new Vector(0, 1, 0));
 
         return c.renderMultiThread(w, -1);
@@ -295,14 +303,50 @@ public class Main {
 
         w.addLight(new PointLight(new Color(255, 255, 255), new Point(-10, 10, -10)));
 
-        Camera c = new Camera(160, 120, Math.PI / 3);
+        Camera c = new Camera(200, 160, Math.PI / 3);
+
         c.transform(new Point(0, 1.5, -5), new Point(0, 1, 0), new Vector(0, 1, 0));
 
-        w.setRecursionCalls(100);
+        return c.renderMultiThread(w, -1);
+    }
+
+    private static Canvas refractiveWorld() { // program 8 --Chapter 12
+
+        // Note(AbduEhab): The transparent sphere still casts shadows which is weird and
+        // I need to fix that. Prob just gonna have to do some majic with the shadow
+        // detection logic.
+
+        Shape floor = new XZPlane();
+        floor.getMaterial().setColor(new Color(1, 0.9, 0.9)).setSpecular(0).setReflectiveness(0.3);
+
+        Sphere middleSphere = new Sphere();
+        middleSphere.setTransform(Matrix.IDENTITY.translate(-0.5, 1, 0.5));
+        middleSphere.getMaterial().setColor(new Color(0, 0, 0)).setDiffuse(0.7).setSpecular(0.3).setReflectiveness(0.3)
+                .setTransparency(1);
+
+        Sphere rightSphere = new Sphere();
+        rightSphere.setTransform(Matrix.IDENTITY.translate(1.5, 0.5, -0.5).scale(0.5, 0.5, 0.5));
+        rightSphere.getMaterial().setColor(new Color(0.5, 1, 0.1)).setDiffuse(0.7).setSpecular(0.3)
+                .setReflectiveness(0.3);
+
+        Sphere leftSphere = new Sphere();
+        leftSphere.setTransform(Matrix.IDENTITY.translate(-1.5, 0.33, -0.75).scale(0.33, 0.33, 0.33));
+        leftSphere.getMaterial().setColor(new Color(1, 0.8, 0.1)).setDiffuse(0.7).setSpecular(0.3)
+                .setReflectiveness(0.3);
+
+        World w = new World();
+
+        w.addShape(new Shape[] { floor, leftSphere, rightSphere, middleSphere });
+
+        w.addLight(new PointLight(new Color(255, 255, 255), new Point(-10, 10, -10)));
+
+        Camera c = new Camera(200, 160, Math.PI / 3);
+
+        c.transform(new Point(0, 1.5, -5), new Point(0, 1, 0), new Vector(0, 1, 0));
 
         // return c.render(w);
 
-       return c.renderMultiThread(w, -1);
+        return c.renderMultiThread(w, -1);
     }
 
 }

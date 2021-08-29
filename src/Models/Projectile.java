@@ -8,8 +8,14 @@ public class Projectile {
     private Vector velocity;
 
     public Projectile(Point position, Vector velocity) {
-        this.position = position;
-        this.velocity = velocity;
+        if (position != null)
+            this.position = position;
+        else
+            this.position = new Point();
+        if (velocity != null)
+            this.velocity = velocity;
+        else
+            this.velocity = new Vector();
     }
 
     public Point getPosition() {
@@ -17,7 +23,8 @@ public class Projectile {
     }
 
     public void setPosition(Point position) {
-        this.position = position;
+        if (position != null)
+            this.position = position;
     }
 
     public Vector getVelocity() {
@@ -25,7 +32,8 @@ public class Projectile {
     }
 
     public void setVelocity(Vector velocity) {
-        this.velocity = velocity;
+        if (velocity != null)
+            this.velocity = velocity;
     }
 
 }

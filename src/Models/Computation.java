@@ -14,9 +14,12 @@ public class Computation {
     private boolean inside;
     private Point overPoint;
     private Vector reflectionVector;
+    private double n1;
+    private double n2;
+    private Point underPoint;
 
     public Computation(double t, Shape s, Point p, Vector eyeVector, Vector normalVector, boolean inside,
-            Point overPoint, Vector reflectionVector) {
+            Point overPoint, Vector reflectionVector, double n1, double n2, Point underPoint) {
         this.t = t;
         this.s = s;
         this.p = p;
@@ -25,6 +28,9 @@ public class Computation {
         this.inside = inside;
         this.overPoint = overPoint;
         this.reflectionVector = reflectionVector;
+        this.n1 = n1;
+        this.n2 = n2;
+        this.underPoint = underPoint;
     }
 
     public double getT() {
@@ -57,6 +63,18 @@ public class Computation {
 
     public Vector getReflectionVector() {
         return reflectionVector;
+    }
+
+    public double getN1() {
+        return n1;
+    }
+
+    public double getN2() {
+        return n2;
+    }
+
+    public Point getUnderPoint() {
+        return underPoint;
     }
 
 }

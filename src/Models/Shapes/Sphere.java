@@ -3,11 +3,17 @@ package Models.Shapes;
 import java.util.ArrayList;
 
 import Models.Intersection;
+import Models.Material;
+import Models.Matrix;
 import Models.Ray;
 import Models.Tuples.Point;
 import Models.Tuples.Vector;
 
 public class Sphere extends Shape {
+
+    public static Sphere glassSphere() {
+        return (Sphere) new Sphere().setMaterial(new Material().setTransparency(1).setRefractiveIndex(1.5));
+    }
 
     @Override
     public ArrayList<Intersection> intersects(Ray ray) {
@@ -30,7 +36,7 @@ public class Sphere extends Shape {
         retVaues.add(new Intersection((-b - Math.sqrt(discriminant)) / (2 * a), this));
         retVaues.add(new Intersection((-b + Math.sqrt(discriminant)) / (2 * a), this));
 
-        return retVaues;
+        return Intersection.sort(retVaues);
     }
 
     @Override
@@ -55,5 +61,15 @@ public class Sphere extends Shape {
             return true;
 
         return false;
+    }
+
+    @Override
+    public Sphere setTransform(Matrix transform) {
+        return (Sphere) super.setTransform(transform);
+    }
+
+    @Override
+    public Sphere setMaterial(Material material) {
+        return (Sphere) super.setMaterial(material);
     }
 }

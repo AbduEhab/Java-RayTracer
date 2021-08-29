@@ -1,6 +1,7 @@
 package Models;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 import Models.Shapes.Shape;
 import Models.Tuples.Point;
@@ -39,8 +40,6 @@ public class Intersection {
 
     public static Intersection hit(ArrayList<Intersection> intersections) {
 
-        intersections = sort(intersections);
-
         for (Intersection intersection : intersections) {
             if (intersection.getT() > 0)
                 return intersection;
@@ -77,7 +76,7 @@ public class Intersection {
         return true;
     }
 
-    public Computation prepareComputate(Ray ray) {
+    public Computation prepareComputate(Ray ray, ArrayList<Intersection> xs) {
 
         double t2 = t;
         Shape s = shape;
@@ -94,9 +93,46 @@ public class Intersection {
         }
 
         Point overPoint = p.add(normalVector.multiply(0.00001));
+        Point underPoint = p.add(normalVector.multiply(-0.00001));
 
-        return new Computation(t2, s, p, eyeVector, normalVector, inside, overPoint, reflectionVector);
+        double n1 = 0;
+        double n2 = 0;
 
+        if (xs != null) {
+
+            Stack<Intersection> shapesStack = new Stack<Intersection>();
+
+            for (Intersection intersection : xs) {
+
+                if (intersection.equals(this))
+                    if (shapesStack.isEmpty())
+                        n1 = 1.0;
+                    else
+                        n1 = shapesStack.peek().getShape().getMaterial().getRefractiveIndex();
+
+                if (shapesStack.contains(intersection))
+                    shapesStack.remove(intersection);
+                else
+                    shapesStack.push(intersection);
+
+                if (intersection.equals(this)) {
+                    if (shapesStack.isEmpty())
+                        n2 = 1.0;
+                    else
+                        n2 = shapesStack.peek().getShape().getMaterial().getRefractiveIndex();
+                    break;
+                }
+
+            }
+        }
+
+        return new Computation(t2, s, p, eyeVector, normalVector, inside, overPoint, reflectionVector, n1, n2,
+                underPoint);
+
+    }
+
+    public boolean equals(Intersection b) {
+        return t == b.getT() && shape.equals(b.getShape());
     }
 
     public double getT() {

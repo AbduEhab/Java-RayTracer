@@ -115,9 +115,18 @@ public class MaterialTests {
     }
 
     @Test
-    @DisplayName("Lighting the surfave with a patern applied")
+    @DisplayName("Testing for reflective material")
     public void reflectiveness() {
         assertEquals(0, new Material().getReflectiveness(), "Material reflectiveness is not valid");
 
     }
+
+    @Test
+    @DisplayName("Testing for material transparency")
+    public void trancparancy() {
+        assertEquals(0, new Material().getTransparency(), "Material trasparancy is not valid");
+        assertEquals(1, new Material().getRefractiveIndex(), "Material reflective index is not valid");
+
+    }
+
 }
