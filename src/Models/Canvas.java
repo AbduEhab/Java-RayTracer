@@ -22,6 +22,8 @@ public class Canvas {
 
     private Color[][] pixel;
 
+    private String defPath = "./ExampleRenders/";
+
     public Canvas(int width, int height) {
         this.width = width;
         this.height = height;
@@ -43,7 +45,7 @@ public class Canvas {
     }
 
     public boolean toPPM() {
-        return toPPM("./Renders/" + "ExampleRender.ppm");
+        return toPPM(defPath + "ExampleRender.ppm");
     }
 
     public boolean toPPM(String path) {
@@ -73,9 +75,9 @@ public class Canvas {
         } catch (FileNotFoundException e) {
 
             try {
-                Path renderPath = Paths.get("../Renders/");
+                Path renderPath = Paths.get("." + defPath);
                 Files.createDirectories(renderPath);
-                toPPM("../Renders/" + "ExampleRender.ppm");
+                toPPM("." + defPath + "ExampleRender.ppm");
 
             } catch (IOException e1) {
                 System.out.println("An unknown error occured while creating file.");
@@ -114,7 +116,7 @@ public class Canvas {
 
         try {
 
-            File f = new File("./Renders/" + "ExampleRender.png");
+            File f = new File(defPath + "ExampleRender.png");
 
             ImageIO.write(image, "png", f);
 
