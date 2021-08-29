@@ -21,6 +21,7 @@ import Models.Tuples.Point;
 import Models.Tuples.Vector;
 import Models.World;
 import Models.Lights.PointLight;
+import Models.Patterns.Pattern;
 
 public class WorldTests {
 
@@ -37,7 +38,7 @@ public class WorldTests {
     @DisplayName("default world contruction")
     public void defaultWorld() {
 
-        World w = World.defaultWorld();
+        World w = World.DEFAULT_WORLD;
 
         PointLight p = new PointLight(new Color(1, 1, 1), new Point(-10, 10, -10));
 
@@ -49,7 +50,7 @@ public class WorldTests {
     @DisplayName("ray intersection")
     public void intersects() {
 
-        World w = World.defaultWorld();
+        World w = World.DEFAULT_WORLD;
 
         Ray r = new Ray(new Point(0, 0, -5), new Vector(0, 0, 1));
 
@@ -89,7 +90,7 @@ public class WorldTests {
     @DisplayName("Shading an intersection")
     public void shadingIntersects() {
 
-        World w = World.defaultWorld();
+        World w = World.DEFAULT_WORLD;
 
         Ray r = new Ray(new Point(0, 0, -5), new Vector(0, 0, 1));
 
@@ -110,7 +111,7 @@ public class WorldTests {
     @DisplayName("Shading an intersection from the inside")
     public void shadingInsideIntersects() {
 
-        World w = World.defaultWorld();
+        World w = World.DEFAULT_WORLD;
 
         w.getLights().set(0, new PointLight(new Color(1, 1, 1), new Point(0, 0.25f, 0)));
 
@@ -133,7 +134,7 @@ public class WorldTests {
     @DisplayName("Shadow casting test")
     public void inShadow() {
 
-        World w = World.defaultWorld();
+        World w = World.DEFAULT_WORLD;
 
         Point p = new Point(0, 10, 0);
         assertEquals(false, w.isShadowed(p, new PointLight(new Color(0, 0, 0), new Point(-10, 10, -10))),
@@ -182,7 +183,7 @@ public class WorldTests {
     @DisplayName("Reflected Color Method")
     public void reflectedColor() {
 
-        World w = World.defaultWorld();
+        World w = World.DEFAULT_WORLD;
 
         Ray r = new Ray(new Point(0, 0, 0), new Vector(0, 0, 1));
 
@@ -203,7 +204,7 @@ public class WorldTests {
     @DisplayName("Reflected Color Method further testing")
     public void reflectedColor2() {
 
-        World w = World.defaultWorld();
+        World w = World.DEFAULT_WORLD;
 
         Shape s = new XZPlane();
 
@@ -231,7 +232,7 @@ public class WorldTests {
     @DisplayName("Reflected Color Method extended testing")
     public void shadeHitReflectedColor() {
 
-        World w = World.defaultWorld();
+        World w = World.DEFAULT_WORLD;
 
         Shape s = new XZPlane();
 
@@ -280,10 +281,10 @@ public class WorldTests {
     }
 
     @Test
-    @DisplayName("Reflected Color Method extended testing")
-    public void shadeHitRefractedColor() {
+    @DisplayName("Reflacted Color Method testing")
+    public void shadeHitRefractedBasicColor() {
 
-        World w = World.defaultWorld();
+        World w = World.DEFAULT_WORLD;
 
         Shape s = w.getShapes().get(0);
 
@@ -295,6 +296,28 @@ public class WorldTests {
 
         Color c = w.refractedColor(comp);
 
-        assertEquals(true, c.equals(Color.BLACK), "Reflected Color Method is not implemented correctly");
+        assertEquals(true, c.equals(Color.BLACK), "Refracted Color Method is not implemented correctly");
+    }
+
+    @Test
+    @DisplayName("Reflected Color Method extended testing")
+    public void shadeHitInternalRefractedTest() {
+
+        World w = World.DEFAULT_WORLD;
+
+        Shape s = w.getShapes().get(0);
+
+        s.getMaterial().setTransparency(1).setRefractiveIndex(1.5);
+
+        Ray r = new Ray(new Point(0, 0, Math.sqrt(2) / 2), new Vector(0, 1, 0));
+
+        Intersection[] xs = new Intersection[] { new Intersection(-Math.sqrt(2) / 2, s),
+                new Intersection(Math.sqrt(2) / 2, s) };
+
+        Computation comp = xs[1].prepareComputate(r, new ArrayList<Intersection>(Arrays.asList(xs)));
+
+        Color c = w.refractedColor(comp);
+
+        assertEquals(true, c.equals(Color.BLACK), "Refracted Color Method is not implemented correctly");
     }
 }

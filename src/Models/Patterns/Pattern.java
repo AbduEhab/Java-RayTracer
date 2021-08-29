@@ -12,6 +12,8 @@ abstract public class Pattern {
     private Color firstColor = Color.WHITE;
     private Color secondColor = Color.BLACK;
 
+    final public static Pattern TESTPATTERN = new Stripe();
+
     public Pattern() {
         firstColor = Color.WHITE;
         secondColor = Color.BLACK;
@@ -27,7 +29,6 @@ abstract public class Pattern {
 
         firstColor = colors[0];
         secondColor = colors[1];
-
     }
 
     abstract public Color colorAt(Point p);
