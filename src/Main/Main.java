@@ -310,10 +310,10 @@ public class Main {
         return c.renderMultiThread(w, -1);
     }
 
-    private static Canvas refractiveWorld() { // program 8 --Chapter 12
+    private static Canvas refractiveWorld() { // program 9 --Chapter 12
 
-        // Note(AbduEhab): The transparent sphere still casts shadows which is weird and
-        // I need to fix that. Prob just gonna have to do some majic with the shadow
+        // Note(AbduEhab): The transparent sphere still casts shadows which is weird.
+        // I need to fix that. Prob just gonna have to do some magic with the shadow
         // detection logic.
 
         Shape floor = new XZPlane();
@@ -321,8 +321,8 @@ public class Main {
 
         Sphere middleSphere = new Sphere();
         middleSphere.setTransform(Matrix.IDENTITY.translate(-0.5, 1, 0.5));
-        middleSphere.getMaterial().setColor(new Color(0, 0, 0)).setDiffuse(1).setSpecular(1).setReflectiveness(0.5)
-                .setTransparency(1);
+        middleSphere.getMaterial().setColor(new Color(0, 0, 0)).setDiffuse(0.1).setSpecular(1).setReflectiveness(0.3)
+                .setShininess(300).setTransparency(1);
 
         Sphere rightSphere = new Sphere();
         rightSphere.setTransform(Matrix.IDENTITY.translate(1.5, 0.5, -0.5).scale(0.5, 0.5, 0.5));

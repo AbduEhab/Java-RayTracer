@@ -52,9 +52,7 @@ public class World {
 
         for (Light light : lights) {
 
-            boolean inShadow = false;
-
-            inShadow = isShadowed(c.getOverPoint(), light);
+            boolean inShadow = isShadowed(c.getOverPoint(), light);
 
             res = res.add(c.getShape().getMaterial().lighting(light, c.getShape(), c.getPoint(), c.getEyeVector(),
                     c.getNormalVector(), inShadow));
@@ -69,7 +67,8 @@ public class World {
 
                 double reflectiveness = c.schlick();
 
-                res = res.add(reflectionMap.multiply(1 - reflectiveness)).add(refractionMap.multiply(1 - reflectiveness));
+                res = res.add(reflectionMap.multiply(1 - reflectiveness))
+                        .add(refractionMap.multiply(1 - reflectiveness));
             } else
                 res = res.add(reflectionMap).add(refractionMap);
 
