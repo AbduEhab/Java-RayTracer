@@ -96,7 +96,7 @@ public class IntersectionTests {
 
                 ArrayList<Intersection> xs = new ArrayList<Intersection>(Arrays.asList(intersections));
 
-                Double[][] results = { { 1.0, 1.5 }, { 1.5, 2d }, { 2d, 2.5 }, { 2.5, 2d }, { 2d, 2.5 }, { 2.5, 1.5 } };
+                Double[][] results = { { 1.0, 1.5 }, { 1.5, 2d }, { 2d, 2.5 }, { 2.5, 2.5 }, { 2.5d, 1.5 }, { 1.5, 1d } };
 
                 for (int i = 0; i < intersections.length; i++) {
                         Computation comp = intersections[i].prepareComputate(r, xs);
@@ -111,7 +111,7 @@ public class IntersectionTests {
 
         @Test
         @DisplayName("Testing underpoint Computation")
-        public void underpointoo() {
+        public void underpoint() {
 
                 Ray r = new Ray(new Point(0, 0, -5), new Vector(0, 0, 1));
 

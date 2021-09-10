@@ -21,7 +21,6 @@ import Models.Tuples.Point;
 import Models.Tuples.Vector;
 import Models.World;
 import Models.Lights.PointLight;
-import Models.Patterns.Pattern;
 
 public class WorldTests {
 

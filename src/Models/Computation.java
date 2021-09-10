@@ -33,6 +33,28 @@ public class Computation {
         this.underPoint = underPoint;
     }
 
+    public double schlick() {
+
+        double cosine = eyeVector.dot(normalVector);
+
+        if (n1 > n2) {
+            double n = n1 / n2;
+            double sin2_t = n * n * (1 - cosine * cosine);
+
+            if (sin2_t > 1)
+                return 1;
+
+            double cos_t = Math.sqrt(1 - sin2_t);
+
+            cosine = cos_t;
+        }
+
+        double r0 = ((n1 - n2) / (n1 + n2));
+        r0 = r0 * r0;
+
+        return r0 + (1 - r0) * Math.pow(1 - cosine, 5);
+    }
+
     public double getT() {
         return t;
     }

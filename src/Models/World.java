@@ -46,20 +46,32 @@ public class World {
         return shadeHitHelper(c, 0);
     }
 
-    public Color shadeHitHelper(Computation c, int recursionLevel) {
+    private Color shadeHitHelper(Computation c, int recursionLevel) {
+
         Color res = new Color(0, 0, 0);
+
         for (Light light : lights) {
 
-            boolean inShadow = false;
-
-            inShadow = isShadowed(c.getOverPoint(), light);
+            boolean inShadow = isShadowed(c.getOverPoint(), light);
 
             res = res.add(c.getShape().getMaterial().lighting(light, c.getShape(), c.getPoint(), c.getEyeVector(),
                     c.getNormalVector(), inShadow));
 
-            res = res.add(reflectedColorHelper(c, ++recursionLevel));
+            Color reflectionMap = reflectedColorHelper(c, ++recursionLevel);
 
-            res = res.add(refractedColorHelper(c, ++recursionLevel));
+            Color refractionMap = refractedColorHelper(c, ++recursionLevel);
+
+            Material mat = c.getShape().getMaterial();
+
+            if (mat.getReflectiveness() > 0 && mat.getTransparency() > 0) {
+
+                double reflectiveness = c.schlick();
+
+                res = res.add(reflectionMap.multiply(1 - reflectiveness))
+                        .add(refractionMap.multiply(1 - reflectiveness));
+            } else
+                res = res.add(reflectionMap).add(refractionMap);
+
         }
 
         return res;
@@ -79,7 +91,7 @@ public class World {
         return shadeHitHelper(c, 0);
     }
 
-    public Color colorAt(Ray ray, int recursionLevel) {
+    private Color colorAt(Ray ray, int recursionLevel) {
 
         ArrayList<Intersection> intrsections = intersects(ray);
 
@@ -117,7 +129,7 @@ public class World {
 
     }
 
-    public Color reflectedColorHelper(Computation comp, int recursionLevel) {
+    private Color reflectedColorHelper(Computation comp, int recursionLevel) {
 
         if (comp.getShape().getMaterial().getReflectiveness() == 0 | recursionLevel > recursionCalls)
             return Color.BLACK;
@@ -133,7 +145,7 @@ public class World {
         return refractedColorHelper(comp, 0);
     }
 
-    public Color refractedColorHelper(Computation comp, int recursionLevel) {
+    private Color refractedColorHelper(Computation comp, int recursionLevel) {
 
         if (comp.getShape().getMaterial().getRefractiveIndex() == 0 | recursionLevel > recursionCalls)
             return Color.BLACK;
