@@ -11,7 +11,7 @@ public class Material {
 
     private Color color = new Color(1, 1, 1);;
     private Pattern pattern;
-    private double ambient = 0.1;;
+    private double ambient = 0.1;
     private double diffuse = 0.9;
     private double specular = 0.9;;
     private double shininess = 200;
@@ -59,8 +59,9 @@ public class Material {
 
         Color effColor = null;
         if (pattern != null) {
-            effColor = pattern.colorAt(shape, point).multiply(light.getIntensity());
 
+            effColor = pattern.colorAt(shape, point).multiply(light.getIntensity());
+            
         } else
             effColor = color.multiply(light.getIntensity());
 

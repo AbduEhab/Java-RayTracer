@@ -111,7 +111,7 @@ public class IntersectionTests {
 
         @Test
         @DisplayName("Testing underpoint Computation")
-        public void underpointoo() {
+        public void underpoint() {
 
                 Ray r = new Ray(new Point(0, 0, -5), new Vector(0, 0, 1));
 

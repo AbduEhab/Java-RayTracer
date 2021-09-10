@@ -100,7 +100,7 @@ public class Intersection {
 
         if (xs != null) {
 
-            Stack<Intersection> shapesStack = new Stack<Intersection>();
+            Stack<Shape> shapesStack = new Stack<Shape>();
 
             for (Intersection intersection : xs) {
 
@@ -108,18 +108,18 @@ public class Intersection {
                     if (shapesStack.isEmpty())
                         n1 = 1.0;
                     else
-                        n1 = shapesStack.peek().getShape().getMaterial().getRefractiveIndex();
+                        n1 = shapesStack.peek().getMaterial().getRefractiveIndex();
 
-                if (shapesStack.contains(intersection))
-                    shapesStack.remove(intersection);
+                if (shapesStack.contains(intersection.getShape()))
+                    shapesStack.remove(intersection.getShape());
                 else
-                    shapesStack.push(intersection);
+                    shapesStack.push(intersection.getShape());
 
                 if (intersection.equals(this)) {
                     if (shapesStack.isEmpty())
                         n2 = 1.0;
                     else
-                        n2 = shapesStack.peek().getShape().getMaterial().getRefractiveIndex();
+                        n2 = shapesStack.peek().getMaterial().getRefractiveIndex();
                     break;
                 }
 
