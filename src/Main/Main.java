@@ -9,6 +9,7 @@ import Models.Matrix;
 import Models.Projectile;
 import Models.Ray;
 import Models.Shapes.XZPlane;
+import Models.Shapes.Cube;
 import Models.Shapes.Shape;
 import Models.Shapes.Sphere;
 import Models.World;
@@ -41,7 +42,9 @@ public class Main {
 
         // var c = reflectiveWorld();
 
-        var c = refractiveWorld();
+        // var c = refractiveWorld();
+
+        var c = cubeWorld();
 
         Long endTime = System.nanoTime();
         System.out.println("Pixel Calculation done in: " + (endTime - startTime) / 1000000 + "ms");
@@ -310,7 +313,7 @@ public class Main {
         return c.renderMultiThread(w, -1);
     }
 
-    private static Canvas refractiveWorld() { // program 9 --Chapter 12
+    private static Canvas refractiveWorld() { // program 9 --Chapter 11
 
         // Note(AbduEhab): The transparent sphere still casts shadows which is weird.
         // I need to fix that. Prob just gonna have to do some magic with the shadow
@@ -340,7 +343,40 @@ public class Main {
 
         w.addLight(new PointLight(new Color(255, 255, 255), new Point(-10, 10, -10)));
 
-        Camera c = new Camera(1280, 720, Math.PI / 3);
+        Camera c = new Camera(200, 160, Math.PI / 3);
+
+        c.transform(new Point(0, 1.5, -5), new Point(0, 1, 0), new Vector(0, 1, 0));
+
+        return c.renderMultiThread(w, -1);
+    }
+
+    private static Canvas cubeWorld() { // program 10 --Chapter 12
+
+        Shape floor = new XZPlane();
+        floor.getMaterial().setColor(new Color(1, 0.9, 0.9)).setSpecular(0).setReflectiveness(0.3);
+
+        Cube middleSphere = new Cube();
+        middleSphere.setTransform(Matrix.IDENTITY.translate(-0.5, 1, 0.5));
+        middleSphere.getMaterial().setColor(new Color(0.5, 1, 0.1)).setDiffuse(0.7).setSpecular(0.3)
+                .setReflectiveness(0.3);
+
+        Sphere rightSphere = new Sphere();
+        rightSphere.setTransform(Matrix.IDENTITY.translate(1.5, 0.5, -0.5).scale(0.5, 0.5, 0.5));
+        rightSphere.getMaterial().setColor(new Color(0.5, 1, 0.1)).setDiffuse(0.7).setSpecular(0.3)
+                .setReflectiveness(0.3);
+
+        Sphere leftSphere = new Sphere();
+        leftSphere.setTransform(Matrix.IDENTITY.translate(-1.5, 0.33, -0.75).scale(0.33, 0.33, 0.33));
+        leftSphere.getMaterial().setColor(new Color(1, 0.8, 0.1)).setDiffuse(0.7).setSpecular(0.3)
+                .setReflectiveness(0.3);
+
+        World w = new World();
+
+        w.addShape(new Shape[] { floor, leftSphere, rightSphere, middleSphere });
+
+        w.addLight(new PointLight(new Color(255, 255, 255), new Point(-10, 10, -10)));
+
+        Camera c = new Camera(200, 160, Math.PI / 3);
 
         c.transform(new Point(0, 1.5, -5), new Point(0, 1, 0), new Vector(0, 1, 0));
 
