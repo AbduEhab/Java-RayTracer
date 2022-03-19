@@ -14,10 +14,6 @@ public abstract class Tuple {
                 && (Math.abs(components[3] - tupleToCompare.getW()) <= 0.00001);
     }
 
-    public abstract Tuple add(Tuple b);
-
-    public abstract Tuple subtract(Tuple b);
-
     public abstract String toString();
 
     public double getX() {

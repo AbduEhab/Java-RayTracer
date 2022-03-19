@@ -12,7 +12,6 @@ public class Vector extends Tuple {
 
     public Vector add(Tuple b) {
         return new Vector(getX() + b.getX(), getY() + b.getY(), getZ() + b.getZ());
-
     }
 
     public Vector subtract(Tuple b) {
