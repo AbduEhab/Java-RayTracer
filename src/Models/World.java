@@ -57,9 +57,9 @@ public class World {
             res = res.add(c.getShape().getMaterial().lighting(light, c.getShape(), c.getPoint(), c.getEyeVector(),
                     c.getNormalVector(), inShadow));
 
-            Color reflectionMap = reflectedColorHelper(c, ++recursionLevel);
+            Color reflectionMap = reflectedColorHelper(c, recursionLevel + 1);
 
-            Color refractionMap = refractedColorHelper(c, ++recursionLevel);
+            Color refractionMap = refractedColorHelper(c, recursionLevel + 1);
 
             Material mat = c.getShape().getMaterial();
 
@@ -119,8 +119,8 @@ public class World {
 
         if (hit != null && hit.getT() < distance)
             return true;
-        else
-            return false;
+
+        return false;
     }
 
     public Color reflectedColor(Computation comp) {

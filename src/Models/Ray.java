@@ -24,12 +24,12 @@ public class Ray {
         return s.intersects(this);
     }
 
-    public ArrayList<Intersection> intersects(World w) { // possibly redundant, used for debugging
+    public ArrayList<Intersection> intersects(World w) { // redundant, used for debugging
 
         return w.intersects(this);
     }
 
-    public Ray transform(Matrix matrix) { // possible problem related to deep cloning
+    public Ray transform(Matrix matrix) {
 
         Point newOrigin = matrix.multiply(origin);
         Vector newdirection = matrix.multiply(direction);

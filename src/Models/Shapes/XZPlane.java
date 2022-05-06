@@ -18,8 +18,9 @@ public class XZPlane extends Shape {
         }
 
         double t = -(ray.getOrigin().getY()) / (ray.getDirection().getY());
-
         ArrayList<Intersection> intersects = new ArrayList<Intersection>();
+
+        
         intersects.add(new Intersection(t, this));
 
         return intersects;

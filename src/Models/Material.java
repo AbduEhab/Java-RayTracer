@@ -20,11 +20,6 @@ public class Material {
     private double refractiveIndex = 1;
 
     public Material() {
-        color = new Color(1, 1, 1);
-        ambient = 0.1;
-        diffuse = 0.9;
-        specular = 0.9;
-        shininess = 200;
     }
 
     public String toString() {
@@ -61,7 +56,7 @@ public class Material {
         if (pattern != null) {
 
             effColor = pattern.colorAt(shape, point).multiply(light.getIntensity());
-            
+
         } else
             effColor = color.multiply(light.getIntensity());
 
