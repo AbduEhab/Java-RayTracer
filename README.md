@@ -1,15 +1,15 @@
+# Overview
+
+This is the first Ray-Tracer I have ever written. It does not support any fancy features like Global Illumination.
+
+Fully supports Windows (full UI and stuff) - NOW SUPPORTS GCC (tested on windows only). Linux works in `Legacy mode` which would output the rendered image onto the terminal, macOS was not tested.
+
+# Requirements
+- [JDK](https://www.oracle.com/java/technologies/downloads/)
+
 ## Getting Started
+Just run the main file and you're good to go!
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
-
-## Folder Structure
-
-The workspace contains two folders by default, where:
-
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
-
-## Dependency Management
-
-The `JAVA DEPENDENCIES` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-pack/blob/master/release-notes/v0.9.0.md#work-with-jar-files-directly).
-# Java-RayTracer
+### Demo Renders
+![Demo 1](https://github.com/AbduEhab/Java-RayTracer/blob/main/ExampleRenders/Ch10_PatternScene.png)
+![Demo 2](https://github.com/AbduEhab/Java-RayTracer/blob/main/ExampleRenders/Ch12_RefractiveScene.png)
